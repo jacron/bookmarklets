@@ -1,0 +1,116 @@
+/* 	core.css
+	bij getpic.htm
+	van imdb */
+h1{
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 13px auto 0;
+    padding-bottom: 0;
+}
+h2{
+ color: #A58500;
+    font-size: 17.5px;
+    margin: 0 0 0.5em;
+    padding: 0;}
+h3{
+    color: #A58500;
+    font-size: 15px;
+    margin: 0 0 0.5em;
+    padding: 0;
+}
+.title{
+  font-size: 24px;
+	font-style: italic;
+  text-align: center;
+}
+body {
+    color: #333333;
+    direction: ltr;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-size: 11px;
+    text-align: left;
+}
+.aux-content-widget {
+    /*http://webdesignerwall.com/tutorials/cross-browser-css-gradient*/
+    background: #999900;
+
+    background: -webkit-gradient(linear, left top, left bottom, from(#E8E8E8), to(#F2F2F1));/*Chrome*/
+    background: -moz-linear-gradient(center bottom , #E8E8E8 0%, #F2F2F1 50%) repeat scroll 0 0 #F5F5F4;/*FF*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#E8E8E8', endColorstr='#F2F2F1')";/*IE nq */
+
+    border: 1px solid #F6F6F5;
+
+    border-radius: 12px 12px 12px 12px;
+    behavior:url(../script/border-radius.htc);/*IE, nq (non quirks)*/
+
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    margin: 8px 4px;
+    padding: 10px 12px;
+    position: relative;
+    width: auto;
+}
+#bm-info{
+    display:none;
+    position: absolute;
+    border: 1px solid #F6F6F5;
+    border-radius: 12px 12px 12px 12px;
+    behavior:url(../script/border-radius.htc);/*IE, nq (non quirks)*/
+    background: #ffc;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    padding:10px;
+    width:240px;
+}
+#bm-src{
+    display:none;
+    position: absolute;
+    border: 1px solid #F6F6F5;
+    border-radius: 12px 12px 12px 12px;
+    behavior:url(../script/border-radius.htc);/*IE, nq (non quirks)*/
+    background: #ffc;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    padding:10px;
+    width:auto;
+}
+td{
+	vertical-align:top;
+	width:33%;
+}
+#pagecontent {
+    background-color: #ffc;
+    margin-bottom: -1px;
+    margin-top: -1px;
+    padding-bottom: 1px;
+    padding-top: 1px;
+    border: 1px solid #F6F6F5;
+    border-radius: 12px 12px 12px 12px;
+    width: auto;
+}
+.description {
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 60px;
+  height: 40px;
+}
+.imdb {
+  background: url(../images/IMDb.gif) no-repeat;
+}
+.flickr {
+  background: url(../images/flickr.ico) no-repeat;
+
+}
+.google {
+  background: url(../images/google.ico) no-repeat;
+}
+.youtube {
+  background: url(../images/youtube.ico) no-repeat;
+}
+.nmovies {
+  background: url(../images/nmovies.ico) no-repeat;
+}
