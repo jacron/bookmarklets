@@ -1,14 +1,6 @@
 /* 	core.css
 	bij getpic.htm
 	van imdb */
-body {
-    color: #333333;
-    background-color: #bbc;
-    direction: ltr;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    font-size: 11px;
-    text-align: left;
-}
 h1{
     font-family: Verdana,Arial,Helvetica,sans-serif;
     font-size: 20px;
@@ -31,6 +23,13 @@ h3{
   font-size: 24px;
 	font-style: italic;
   text-align: center;
+}
+body {
+    color: #333333;
+    direction: ltr;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-size: 11px;
+    text-align: left;
 }
 .aux-content-widget {
     /*http://webdesignerwall.com/tutorials/cross-browser-css-gradient*/
@@ -78,6 +77,7 @@ td{
 	width:33%;
 }
 #pagecontent {
+    background-color: #ffc;
     margin-bottom: -1px;
     margin-top: -1px;
     padding-bottom: 1px;
@@ -103,12 +103,7 @@ td{
 }
 .flickr {
   background: url(../images/flickr.ico) no-repeat;
-}
-.nos {
-  background: url(../images/nos.png) no-repeat;
-}
-.journaal24 {
-  background: url(../images/journaal24.png) no-repeat;
+
 }
 .google {
   background: url(../images/google.ico) no-repeat;
