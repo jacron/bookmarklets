@@ -1,4 +1,5 @@
 <?php
+//bookmarklets/index.php
 
 /* Opvolger van getpic.html, de pagina met mijn bookmarklets.
  * Scheiding van data en opmaak-elementen.
@@ -7,12 +8,20 @@
  * * Er wordt nu steeds gecontroleerd of de locatie klopt voor deze actie.
  */
 
-include 'data.php';  // data, with the javascript
+include 'Bookmarklets.php';
 
-function column($col) {
-  global $bookmarklets;
+/**
+ * Remove all white space.
+ * @param string $s e.g. javascript
+ * @return string
+ */
+function minify($s) {
+  return preg_replace('/\s+/', '', $s);
+}
+
+function column($col, $bms) {
   $html = '';
-  foreach ($bookmarklets[$col] as $bm) {
+  foreach ($bms[$col] as $bm) {
     $html .= '<div class="aux-content-widget">';
     if (isset($bm['icon'])) {
       $html .= '<div class="icon ' . $bm['icon'] . '"></div>';
@@ -21,8 +30,9 @@ function column($col) {
     $html .= '<h2>' . $bm['subtitle'] . '</h2>';
     $html .= '<div class="description">' . $bm['body'] . '</div>';
     if (isset($bm['script'])) {
-      $html .= '<hr><a href="javascript:(function(){' . minify($bm['script']) . '})();">' .
-        $bm['link'] . '</a>';
+      $script = minify($bm['script']);
+      $link = $bm['link'];
+      $html .= "<hr><a href=\"javascript:(function(){" . $script . "})();\">$link</a>";
     }
     $html .= '</div>';
   }
@@ -30,6 +40,9 @@ function column($col) {
 }
 
 $title = 'Bookmarklets - by JC';
+$bookmarklets = new Bookmarklets();
+$bms = $bookmarklets->get();
+
 ?>
 <html>
 <head>
@@ -41,9 +54,9 @@ $title = 'Bookmarklets - by JC';
   <div class="title"><?=$title ?></div>
   <table>
     <tr>
-      <td><?php print column('links')?></td>
-      <td><?php print column('midden')?></td>
-      <td><?php print column('rechts')?></td>
+      <td><?php print column('links', $bms)?></td>
+      <td><?php print column('midden', $bms)?></td>
+      <td><?php print column('rechts', $bms)?></td>
     </tr>
   </table>
 </div>
