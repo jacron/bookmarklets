@@ -42,6 +42,7 @@ class Bookmarklets {
       'rechts' => array(
         $this->bm_teletekst_popup(),
         $this->bm_journaal24_popup(),
+        $this->bm_open_all_images(),
       ),
     );
   }
@@ -166,6 +167,53 @@ class Bookmarklets {
         '" . $this->specs_window_journaal24 . "')",
       'link' => 'nj',
       'icon' => 'journaal24'
+    );
+  }
+
+  private function bm_open_all_images() {
+    return array(
+      'title' => 'Afbeeldingen Opener',
+      'subtitle' => 'Open links als afbeeldingen',
+      'body' => "Bedoeld voor lijstjes op pagina's met de tekst 'Index of'",
+      'script' => "
+        var bm_links=document.links,
+          bm_len=bm_links.length,
+          href,
+          bm_link,
+          is_image,
+          text,
+          oldtext,
+          ul;
+
+        ul = document.getElementsByTagName('ul');
+        if (ul.length > 0) {
+          ul[0].style.listStyle = 'none';
+          li = document.getElementsByTagName('li');
+          for(i=0; i<li.length; i++){
+            li[i].style.display = 'inline';
+          }
+        }
+
+        for (i = 0; i < bm_len; i++){
+          bm_link = bm_links[i];
+          href = bm_link.href;
+          is_image = href.indexOf('jpg') != -1 || href.indexOf('JPG') != -1 || href.indexOf('png') != -1;
+          if (href.indexOf('http') == 0 && is_image) {
+
+              img = document.createElement('img');
+              img.src = href;
+              img.width = '300';
+
+              bm_link.appendChild(img);
+              oldtext = img.previousSibling;
+              bm_link.removeChild(oldtext);
+
+              bm_link.target = '_blank';
+          }
+        }
+        ",
+      'link' => 'opener',
+      'icon' => 'image'
     );
   }
 

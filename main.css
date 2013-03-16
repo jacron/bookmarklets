@@ -119,3 +119,9 @@ td{
 .nmovies {
   background: url(../images/nmovies.ico) no-repeat;
 }
+.image {
+  background: url(../images/camera.png) no-repeat;
+}
+.footer {
+  margin-left: 20px;
+}

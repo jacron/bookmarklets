@@ -16,7 +16,7 @@ include 'Bookmarklets.php';
  * @return string
  */
 function minify($s) {
-  return preg_replace('/\s+/', '', $s);
+  return preg_replace('/\s+/', '', preg_replace('/var /', 'var&nbsp;', $s));
 }
 
 function column($col, $bms) {
@@ -59,6 +59,10 @@ $bms = $bookmarklets->get();
       <td><?php print column('rechts', $bms)?></td>
     </tr>
   </table>
+  <div class="footer">
+    <a id="perfect-site" href="http://jcroonen.nl">jcroonen.nl</a>
+    <a href="http://jcroonen.nl/assets/images/boek/9043007242.jpg">boekje</a>
+  </div>
 </div>
 </body>
 </html>
