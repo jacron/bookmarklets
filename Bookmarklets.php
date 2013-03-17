@@ -2,44 +2,19 @@
 
 class Bookmarklets {
 
-  private $serverport = ':8080';  // leave empty when using port 80 for local apps
-
-  // windows specs: http://www.w3schools.com/jsref/met_win_open.asp
-  private $specs_window_youtube = 'width=800,height=500,resizable=1';
-  private $specs_window_teletekst = 'width=740,height=540,resizable=0';
-  private $specs_window_journaal24 = 'width=700,height=510,resizable=0';
-  private $specs_google_bookmarks = 'height=420px,width=550px,resizable=1,alwaysRaised=1';
-
-  // local urls
-  private $url_youtube_player = 'http://yplayer';
-  private $nmovies_url = 'http://nmovies';
-
-  // remote urls
-  private $google_bookmarks = 'http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk=';
-  private $nos_teletekst = 'http://nos.nl/teletekst/#101_01';
-  private $nos_journaal24 = 'http://nos.nl/nieuws/live/journaal24';
-
-  private function nmoviesNewUrl() {
-    $url = $this->nmovies_url . $this->serverport . '?newfilm=';
-    return $url;
-  }
-
-  /**
-   * Haal drie kolommen met bookmarklets op,
-   */
-  public function get() {
+  public function getColumns() {
     return array(
-      'links' => array(
+      array(
         $this->bm_imdb_xr(),
         $this->bm_imdb_title(),
         $this->bm_three_steps_back(),
       ),
-      'midden' => array(
+      array(
         $this->bm_google_bookmark(),
         $this->bm_flickr_dl(),
         $this->bm_youtube_popup(),
       ),
-      'rechts' => array(
+      array(
         $this->bm_teletekst_popup(),
         $this->bm_journaal24_popup(),
         $this->bm_open_all_images(),
@@ -47,8 +22,22 @@ class Bookmarklets {
     );
   }
 
+  public function renderColumns() {
+    $columns = $this->getColumns();
+
+    $html = '';
+    foreach($columns as $column) {
+      $html .= '<td>';
+      foreach($column as $bm) {
+        $html .= $bm->makeTile();
+      }
+      $html .= '</td>';
+    }
+    return $html;
+  }
+
   private function bm_imdb_xr() {
-    return array(
+    return new Bookmarklet(array(
       'title' => 'IMDb',
       'subtitle' => 'External Reviews',
       'body' => 'When in a IMDb title page, jump to External Reviews.',
@@ -63,57 +52,46 @@ class Bookmarklets {
 
       'link' => 'xr',
       'icon' => 'imdb',
-    );
+    ));
   }
 
-  /**
-   * When in a IMDb title page, open NMovies in another window (tab),
-   * adding this movie to the catalogue.
-   * @return array
-   */
   private function bm_imdb_title() {
-    return array(
+    return new Bookmarklet(array(
       'title' => 'IMDb',
       'subtitle' => 'Add title to NMovies',
       'body' => "When in a IMDb title page, open NMovies in another tab, adding this movie to the catalogue.",
-      'script' => "if (document.location.href.indexOf('imdb.com/title') != -1)
-        window.open('" . $this->nmoviesNewUrl() . "' + document.location.href);",
+      'script' => "
+        url = 'http://nmovies:8080?newfilm=';
+        if (document.location.href.indexOf('imdb.com/title') != -1)
+        window.open(url + document.location.href);",
       'link' => 'title',
       'icon' => 'nmovies',
-    );
+    ));
   }
 
   private function bm_three_steps_back() {
-    return array(
+    return new Bookmarklet(array(
       'title' => 'Misc',
       'subtitle' => 'Back 3x',
       'body' => 'Go back in history 3 x.',
       'script' => 'history.go(-3);',
       'link' => '&lt;3',
-    );
+    ));
   }
 
   private function bm_google_bookmark() {
-    return array(
+    return new Bookmarklet(array(
       'title' => 'Google',
       'subtitle' => 'Bookmark',
       'body' => 'Open a dialog to save the current webpage as your Google bookmark.',
-      'script' => "
-    a = window, b = document, c = encodeURIComponent, d = a.open(
-    '$this->google_bookmarks' + c(b.location) + '&title=' + c(b.title),
-    'bkmk_popup',
-    'left=' + ((a.screenX || a.screenLeft)+10) + ',top=' + ((a.screenY || a.screenTop) + 10) +
-    ',$this->specs_google_bookmarks'
-    );
-    a.setTimeout(function(){d.focus()},300)
-      ",
+      'file' => 'google_bm.js',
       'link' => 'bm',
       'icon' => 'google',
-    );
+    ));
   }
 
   private function bm_flickr_dl() {
-    return array(
+    return new Bookmarklet(array(
       'title' => 'Flickr',
       'subtitle' => 'Download photo',
       'body' => "When in the 'view all sizes' page, save (protected) photo.",
@@ -126,95 +104,64 @@ class Bookmarklets {
       ",
       'link' => 'Get flickr',
       'icon' => 'flickr',
-    );
+    ));
   }
 
   private function bm_youtube_popup() {
-    return array(
+    return new Bookmarklet(array(
       'title' => 'YouTube',
       'subtitle' => 'Movie in popup',
       'body' => "When in youtube.com, open the current video in a separate, resizeable window.",
       'script' => "
         url = document.location.href.replace('&','_and_');
+        url_yt = 'http://yplayer:8080';
+        specs = 'width=800,height=500,resizable=1';
         if (url.indexOf('youtube.com') != -1){
-          window.open('" . $this->url_youtube_player . $this->serverport .
-          "?url=' + url, 'w', '" . $this->specs_window_youtube . "');
+          window.open(url_yt + '?url=' + url, 'w', specs);
         }
       ",
       'link' => 'yplayer',
       'icon' => 'youtube',
-    );
+    ));
   }
 
   private function bm_teletekst_popup() {
-    return array(
+    return new Bookmarklet(array(
       'title' => 'Teletekst',
       'subtitle' => 'Teletekst in popup',
       'body' => '',
-      'script' => "window.open('$this->nos_teletekst', 'w',
-        '" . $this->specs_window_teletekst . "')",
+      'script' => "
+        specs = 'width=740,height=540,resizable=0';
+        url = 'http://nos.nl/teletekst/#101_01';
+        window.open(url, 'w', specs);",
       'link' => 'tt',
       'icon' => 'nos'
-    );
+    ));
   }
 
   private function bm_journaal24_popup() {
-    return array(
+    return new Bookmarklet(array(
       'title' => 'Journaal',
       'subtitle' => 'NOS Journaal in popup',
       'body' => '',
-      'script' => "window.open('$this->nos_journaal24', 'w',
-        '" . $this->specs_window_journaal24 . "')",
+      'script' => "
+        url = 'http://nos.nl/nieuws/live/journaal24';
+        specs = 'width=700,height=510,resizable=0';
+        window.open(url, 'w', specs);",
       'link' => 'nj',
       'icon' => 'journaal24'
-    );
+    ));
   }
 
   private function bm_open_all_images() {
-    return array(
-      'title' => 'Afbeeldingen Opener',
-      'subtitle' => 'Open links als afbeeldingen',
-      'body' => "Bedoeld voor lijstjes op pagina's met de tekst 'Index of'",
-      'script' => "
-        var bm_links=document.links,
-          bm_len=bm_links.length,
-          href,
-          bm_link,
-          is_image,
-          text,
-          oldtext,
-          ul;
-
-        ul = document.getElementsByTagName('ul');
-        if (ul.length > 0) {
-          ul[0].style.listStyle = 'none';
-          li = document.getElementsByTagName('li');
-          for(i=0; i<li.length; i++){
-            li[i].style.display = 'inline';
-          }
-        }
-
-        for (i = 0; i < bm_len; i++){
-          bm_link = bm_links[i];
-          href = bm_link.href;
-          is_image = href.indexOf('jpg') != -1 || href.indexOf('JPG') != -1 || href.indexOf('png') != -1;
-          if (href.indexOf('http') == 0 && is_image) {
-
-              img = document.createElement('img');
-              img.src = href;
-              img.width = '300';
-
-              bm_link.appendChild(img);
-              oldtext = img.previousSibling;
-              bm_link.removeChild(oldtext);
-
-              bm_link.target = '_blank';
-          }
-        }
-        ",
+    return new Bookmarklet(array(
+      'title' => 'Image Opener',
+      'subtitle' => 'Load images from links',
+      'body' => "Tool for immediately viewing pictures on a page that only has links (e.g. 'Index of')",
+      'file' => 'opener.js',
       'link' => 'opener',
       'icon' => 'image'
-    );
+    ));
   }
 
 }
