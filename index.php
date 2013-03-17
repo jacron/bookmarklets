@@ -1,18 +1,20 @@
 <?php
 //bookmarklets/index.php
 
-/* Opvolger van getpic.html, de pagina met mijn bookmarklets.
+/* BookmarkletsArranger
+ *
+ * Opvolger van getpic.html, de pagina met mijn bookmarklets.
  * Scheiding van data en opmaak-elementen.
  * * Zelfs leesbare javascriptcode mogelijk.
  * * De javascript code regel(s) wordt geminified en in een closure verpakt.
- * * Er wordt nu steeds gecontroleerd of de locatie klopt voor deze actie.
+ * * Er wordt nu steeds gecontroleerd of de locatie van de website wel klopt voor deze actie.
  */
 
-include 'Bookmarklets.php';
-include 'Bookmarklet.php';
+include 'Bookmarklets.php'; // Class rendering the tiles
+include 'Bookmarklet.php';  // Class for properties and rendering a bookmarklet tile
+include 'BookmarkletData.module';  // An array holding the data
 
-$title = 'Bookmarklets - by JC';
-$bookmarklets = new Bookmarklets();
+$title = 'BookmarkletsArranger';
 $settings = array(
   'scriptpath' =>  'scripts/'
 );
@@ -20,19 +22,20 @@ $settings = array(
 <html>
 <head>
 <title><?=$title ?></title>
-    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
 <div id="pagecontent">
   <div class="title"><?=$title ?></div>
   <table>
     <tr>
-      <?php print $bookmarklets->renderColumns(); ?>
+      <?php print Bookmarklets::renderColumns(); ?>
     </tr>
   </table>
   <div class="footer">
-    <a id="perfect-site" href="http://jcroonen.nl">jcroonen.nl</a>
-    <a href="http://jcroonen.nl/assets/images/boek/9043007242.jpg">boekje</a>
+    <a id="perfect-site" href="http://jcroonen.nl">jcroonen.nl</a> |
+    <a href="http://jcroonen.nl/assets/images/boek/9043007242.jpg">boekje</a> |
+    <a href="http://bookmarklets.com">bookmarklets.com</a>
   </div>
 </div>
 </body>

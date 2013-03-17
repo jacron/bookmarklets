@@ -24,9 +24,12 @@ class Bookmarklet {
    * @param array $data
    */
   function __construct($data) {
+    // obligatory fields
     $this->title = $data['title'];
     $this->subtitle = $data['subtitle'];
     $this->body = $data['body'];
+
+    // optional fields
     if (isset($data['script'])) {
       $this->script = $data['script'];
     }

@@ -50,6 +50,7 @@ h3{
     padding: 10px 12px;
     position: relative;
     width: auto;
+    height: 146px;
 }
 #bm-info{
     display:none;
@@ -95,32 +96,32 @@ td{
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 60px;
-  height: 40px;
+  width: 80px;
+  height: 60px;
 }
 .imdb {
-  background: url(../images/IMDb.gif) no-repeat;
+  background: url("../images/IMDb.gif") no-repeat right top;
 }
 .flickr {
-  background: url(../images/flickr.ico) no-repeat;
+  background: url("../images/flickr.ico") no-repeat right top;
 }
 .nos {
-  background: url(../images/nos.png) no-repeat;
+  background: url("../images/nos.png") no-repeat right top;
 }
 .journaal24 {
-  background: url(../images/journaal24.png) no-repeat;
+  background: url("../images/journaal24.png") no-repeat right top;
 }
 .google {
-  background: url(../images/google.ico) no-repeat;
+  background: url("../images/google.ico") no-repeat right top;
 }
 .youtube {
-  background: url(../images/youtube.ico) no-repeat;
+  background: url("../images/youtube.ico") no-repeat right top;
 }
 .nmovies {
-  background: url(../images/nmovies.ico) no-repeat;
+  background: url("../images/nmovies.ico") no-repeat right top;
 }
 .image {
-  background: url(../images/camera.png) no-repeat;
+  background: url("../images/camera.png") no-repeat right top;
 }
 .footer {
   margin-left: 20px;
