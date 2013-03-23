@@ -10,9 +10,14 @@
  * * Er wordt nu steeds gecontroleerd of de locatie van de website wel klopt voor deze actie.
  */
 
-include 'Bookmarklets.php'; // Class rendering the tiles
+include 'View.php'; // Class rendering the tiles
 include 'Bookmarklet.php';  // Class for properties and rendering a bookmarklet tile
-include 'BookmarkletData.module';  // An array holding the data
+if (isset($_REQUEST['special']) && $_REQUEST['special'] == 'own') {
+  include 'Data.private.module';
+}
+else {
+  include 'Data.module';  // An array holding the data
+}
 
 $title = 'BookmarkletsArranger';
 $settings = array(
@@ -27,11 +32,9 @@ $settings = array(
 <body>
 <div id="pagecontent">
   <div class="title"><?=$title ?></div>
-  <table>
-    <tr>
-      <?php print Bookmarklets::renderColumns(); ?>
-    </tr>
-  </table>
+  <div class="content">
+    <?php print View::renderTiles(); ?>
+  </div>
   <div class="footer">
     <a id="perfect-site" href="http://jcroonen.nl">jcroonen.nl</a> |
     <a href="http://jcroonen.nl/assets/images/boek/9043007242.jpg">boekje</a> |

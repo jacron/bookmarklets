@@ -49,8 +49,9 @@ h3{
     margin: 8px 4px;
     padding: 10px 12px;
     position: relative;
-    width: auto;
+    width: 300px;
     height: 146px;
+    float: left;
 }
 #bm-info{
     display:none;
@@ -125,4 +126,5 @@ td{
 }
 .footer {
   margin-left: 20px;
+  clear: both;
 }

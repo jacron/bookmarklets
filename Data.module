@@ -1,0 +1,83 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Holds data for bookmarklets.
+ */
+$tiles = array(
+  // IMDb External Reviews
+  array(
+    'title' => 'IMDb',
+    'subtitle' => 'External Reviews',
+    'body' => 'When in a IMDb title page, jump to External Reviews.',
+    'script' => "d=document.location.href;
+      if (d.indexOf('imdb.com/title') != -1) {
+        pos = d.indexOf('?');
+        if (pos != -1) {
+          d = d.substr(0, pos);
+        }
+        document.location.href = d + 'externalreviews';
+      }",
+
+    'link' => 'xr',
+    'icon' => 'imdb',
+  ),
+  // Browser goback 3 x
+  array(
+    'title' => 'Misc',
+    'subtitle' => 'Back 3x',
+    'body' => 'Go back in history 3 times.',
+    'script' => 'history.go(-3);',
+    'link' => '&lt;3',
+  ),
+  // A very short description
+  array(
+    'title' => 'How to...',
+    'subtitle' => 'Bookmarklet',
+    'body' => 'Drag one of the blue hyperlinks to your bookmarks bar, then try it out.',
+  ),
+  // Google Bookmarks popup
+  array(
+    'title' => 'Google',
+    'subtitle' => 'Bookmark',
+    'body' => 'Open a dialog to save the current webpage as your Google bookmark. Choose your tags',
+    'file' => 'google_bm.js',
+    'link' => 'bm',
+    'icon' => 'google',
+  ),
+  // NOS Teletekst in a popup
+  array(
+    'title' => 'Teletekst',
+    'subtitle' => 'NOS Teletekst in popup',
+    'body' => 'Note: this also works directly as a hyperlink.',
+    'script' => "
+      specs = 'width=740,height=540,resizable=0';
+      url = 'http://nos.nl/teletekst/#101_01';
+      window.open(url, 'w', specs);",
+    'link' => 'tt',
+    'icon' => 'nos'
+  ),
+  // NOS Journaal24 in a popup
+  array(
+    'title' => 'Journaal',
+    'subtitle' => 'NOS Journaal in popup',
+    'body' => 'Note: this also works directly as a hyperlink.',
+    'script' => "
+      url = 'http://nos.nl/nieuws/live/journaal24';
+      specs = 'width=700,height=510,resizable=0';
+      window.open(url, 'w', specs);",
+    'link' => 'nj',
+    'icon' => 'journaal24'
+  ),
+  // Open images on an index page
+  array(
+    'title' => 'Image Opener',
+    'subtitle' => 'Load hyperlinked images',
+    'body' => "I wrote this to have a quick view on pictures that are collected on 'Index of' pages.",
+    'file' => 'opener.js',
+    'link' => 'open',
+    'icon' => 'image'
+  ),
+);
+

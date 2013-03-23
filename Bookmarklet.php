@@ -84,12 +84,28 @@ class Bookmarklet {
    * @return string
    */
   private function minify($s) {
+    //
     $s = $this->removeComment($s);
 
-    return preg_replace('/\s+/', '',
-      str_replace('var ', 'var&nbsp;',
-      str_replace('return ', 'return&nbsp;',
-      str_replace('"', '&quot;', $s))));
+    // escape
+    $search = array(
+      'var ',
+      'return ',
+      '&',
+      '"',
+    );
+    $replace = array(
+      'var%20',
+      'return%20',
+      '&amp;',
+      '&quot;',
+    );
+    $s = str_replace($search, $replace, $s);
+
+    // remove white space
+    $s = preg_replace('/\s+/', '', $s);
+
+    return $s;
   }
 
   private function renderScript() {
@@ -104,24 +120,24 @@ class Bookmarklet {
 
     $file = file_get_contents($settings['scriptpath'] . $this->file);
     $script = $this->minify($file);
-    return "<hr><a href=\"javascript:" . $script . "\">" . $this->link . "</a>";
+    return "<hr><a href=\"javascript:" . $script . "\">" . $this->link . "</a>\n";
   }
 
   public function makeTile() {
     $html = '<div class="aux-content-widget">';
     if (!empty($this->icon)) {
-      $html .= '<div class="icon ' . $this->icon . '"></div>';
+      $html .= '<div class="icon ' . $this->icon . '"></div>'. "\n";
     }
     $html .= '<h1>' . $this->title . '</h1>';
     $html .= '<h2>' . $this->subtitle . '</h2>';
-    $html .= '<div class="description">' . $this->body . '</div>';
+    $html .= '<div class="description">' . $this->body . '</div>' . "\n";
     if (!empty($this->script)) {
       $html .= $this->renderScript();
     }
     else if (!empty($this->file)) {
       $html .= $this->renderFile();
     }
-    $html .= '</div>';
+    $html .= '</div>' . "\n";
     return $html;
   }
 }
