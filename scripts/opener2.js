@@ -14,7 +14,65 @@
    *
    * Author: Jan Croonen 2013.
    */
-  var bm_links = document.links,
+
+//http://coding.smashingmagazine.com/2010/05/23/make-your-own-bookmarklets-with-jquery/
+//use jquery in your bookmarklet
+(function(){
+
+	// the minimum version of jQuery we want
+	var v = "1.3.2";
+
+	// check prior inclusion and version
+	if (window.jQuery === undefined || window.jQuery.fn.jquery < v) {
+		var done = false;
+		var script = document.createElement("script");
+		script.src = "http://ajax.googleapis.com/ajax/libs/jquery/" + v + "/jquery.min.js";
+		script.onload = script.onreadystatechange = function(){
+			if (!done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
+				done = true;
+				initMyBookmarklet();
+			}
+		};
+		document.getElementsByTagName("head")[0].appendChild(script);
+	} else {
+		initMyBookmarklet();
+	}
+
+	function initMyBookmarklet() {
+		(window.myBookmarklet = function() {
+			// your JavaScript code goes here!
+  //console.log('document ready in jQuery style');
+  getImages();
+		})();
+	}
+
+})();
+function hasGraphExt(s) {
+    var p,
+      ext,
+      g = 'jpg;png;gif',
+      exts,
+      k;
+
+    p = s.lastIndexOf('.');
+    if (p != -1) {
+      ext = s.substr(p + 1).toUpperCase();
+    }
+    exts = g.split(';');
+    for (k = 0; k < exts.length; k++) {
+      if (ext === exts[k].toUpperCase()) {
+        return true;
+      }
+    }
+    return false;
+
+}
+function getImages(){
+  console.log('will build my function here...');
+
+}
+
+var bm_links = document.links,
     bm_len = bm_links.length,
     li,
     li_len,
@@ -83,19 +141,28 @@
   for (i = 0; i < bm_len; i++){
     bm_link = bm_links[i];
     href = bm_link.href;
+      var W, H;
 
     if (href.indexOf('http') == 0 && hasGraphExtension(href)) {
 
         img = document.createElement('img');
+
         img.onload = function() {
-          var H = this.height;
-          var W = this.width;
-          img.title = W + 'x' + H;
+          H = this.height;
+          W = this.width;
+
+          var titleText = W + 'x' + H;// + '\n' + href;
+          this.title = titleText;
+
+          this.width = '300';
+          this.style.height = 'auto';
+          this.style.border = 'none';
+          /*
+          var txt = document.createTextNode(sizeText);
+          var parent = this.parentNode;
+          parent.appendChild(txt);*/
         }
         img.src = href;
-        img.width = '300';
-        img.style.height = 'auto';
-        img.style.border = 'none';
 
         // The ul has been transformed, so it is allright to just
         // insert images into each link
@@ -132,8 +199,10 @@
         }
 
         bm_link.target = '_blank';
+        //img.title = W + 'x' + H + '\n' + oldtext;
+        //console.log(oldtext);
     }
   }
-  console.log('added: ' + count);
+  console.log('script2 added: ' + count);
 
 }());

@@ -70,6 +70,19 @@ $tiles = array(
     'link' => 'nj',
     'icon' => 'journaal24'
   ),
+  // dev.jcroonen.nl.2013 in iPhone portrait size
+  /* 320 x 548, W+17 -> 337 (scrollbar) */
+  array(
+    'title' => 'dev.jcroonen.nl',
+    'subtitle' => 'in iPhone portrait',
+    'body' => 'Note: this also works directly as a hyperlink.',
+    'script' => "
+      url = 'http://dev.jcroonen.nl.2013';
+      specs = 'width=337,height=548,resizable=0,scrollbars=yes';
+      window.open(url, 'w', specs);",
+    'link' => 'iphone-p-jc',
+    'icon' => 'jcroonen'
+  ),
   // Open images on an index page
   array(
     'title' => 'Image Opener',

@@ -100,31 +100,73 @@ td{
   width: 80px;
   height: 60px;
 }
+.imdb,
+.flickr,
+.nos,
+.journaal24,
+.google,
+.youtube,
+.nmovies,
+.image {
+  background: url("../images/sprite.png") no-repeat right top;
+}
 .imdb {
-  background: url("../images/IMDb.gif") no-repeat right top;
+  background-position: -70px 0;
+  width: 48px;
+  height:21px;
 }
 .flickr {
-  background: url("../images/flickr.ico") no-repeat right top;
+  background-position: -180px -37px;
+  width: 72px;
+  height:22px;
 }
 .nos {
-  background: url("../images/nos.png") no-repeat right top;
+  background-position: -180px 0;
+  width: 80px;
+  height:30px;
 }
 .journaal24 {
-  background: url("../images/journaal24.png") no-repeat right top;
+  background-position: 0 0;
+  width: 55px;
+  height:52px;
 }
 .google {
-  background: url("../images/google.ico") no-repeat right top;
+  background-position: -264px 0;
+  width: 26px;
+  height:26px;
 }
 .youtube {
-  background: url("../images/youtube.ico") no-repeat right top;
+  background-position: 0 -55px;
+  width: 72px;
+  height:22px;
 }
 .nmovies {
-  background: url("../images/nmovies.ico") no-repeat right top;
+  background-position: -125px 0;
+  width: 43px;
+  height:44px;
 }
 .image {
-  background: url("../images/camera.png") no-repeat right top;
+  background-position: -67px -26px;
+  width: 53px;
+  height:44px;
 }
 .footer {
   margin-left: 20px;
   clear: both;
+}
+.jcroonen {
+  background-position: -139px -50px;
+  width: 16px;
+  height:16px;
+}
+.clear {
+  clear: both;
+}
+.script-bm {
+  margin-left: 12px;
+  background: #ffc;
+  height: 30px;
+  padding-top: 8px;
+  padding-left: 8px;
+  width: 300px;
 }
