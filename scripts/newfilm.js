@@ -47,7 +47,7 @@ function sendForm() {
     i.setAttribute('name', 'ipb507816');
     i.setAttribute('id', 'ipb507816');
     i.setAttribute('allowtransparency', 'true');
-    i.setAttribute('style', 'border: 0; position: absolute; left: 0; top: 0;');
+    i.setAttribute('style', 'border:0; position:absolute; left:0; top:0; width:100%;');
     //i.setAttribute('onload', 'frameDidLoadipb507816++; frameLoadedipb507816();');
     document.body.appendChild(i);
     window.frames['ipb507816'].document.write(
