@@ -11,135 +11,138 @@
  * @author jan
  */
 class Bookmarklet {
-  private $title;
-  private $subtitle;
-  private $body;
-  private $script;
-  private $file;
-  private $link;
-  private $icon;
 
-  /**
-   * Constructor, intializing all fields
-   * @param array $data
-   */
-  function __construct($data) {
-    // obligatory fields
-    $this->title = $data['title'];
-    $this->subtitle = $data['subtitle'];
-    $this->body = $data['body'];
+    private $title;
+    private $subtitle;
+    private $body;
+    private $script;
+    private $file;
+    private $link;
+    private $icon;
 
-    // optional fields
-    if (isset($data['script'])) {
-      $this->script = $data['script'];
-    }
-    if (isset($data['file'])) {
-      $this->file = $data['file'];
-    }
-    if (isset($data['link'])) {
-      $this->link = $data['link'];
-    }
-    if (isset($data['icon'])) {
-      $this->icon = $data['icon'];
-    }
-  }
+    /**
+     * Constructor, intializing all fields
+     * @param array $data
+     */
+    function __construct($data) {
+        // obligatory fields
+        $this->title = $data['title'];
+        $this->subtitle = $data['subtitle'];
+        $this->body = $data['body'];
 
-  private function removeComment($s) {
-    // remove line-comment
-    $lines = explode("\n", $s);
-    //error_log('removing comment');
-    for ($i = 0; $i < count($lines); $i++) {
-      $squoting = false;
-      $dquoting = false;
-      $lastchar = '';
-      for ($j = 0; $j < strlen($lines[$i]); $j++) {
-        $char = $lines[$i][$j];
-        if ($char == '\'') {
-          $squoting = !$squoting;
+        // optional fields
+        if (isset($data['script'])) {
+            $this->script = $data['script'];
         }
-        if ($char == '"') {
-          $dquoting = !$dquoting;
+        if (isset($data['file'])) {
+            $this->file = $data['file'];
         }
-        if (!$squoting && !$dquoting) {
-          if ($char == '/' && $lastchar == '/'){
-            $lines[$i] = substr($lines[$i], 0, $j-1);
-            break;
-          }
+        if (isset($data['link'])) {
+            $this->link = $data['link'];
         }
-        $lastchar = $char;
-      }
+        if (isset($data['icon'])) {
+            $this->icon = $data['icon'];
+        }
     }
-    $s = implode("\n", $lines);
 
-    // remove multi-line comment
-    $s = preg_replace("/\/\*([\s\S]*?)\*\//", '', $s);
+    private function removeComment($s) {
+        // remove line-comment
+        $lines = explode("\n", $s);
+        //error_log('removing comment');
+        for ($i = 0; $i < count($lines); $i++) {
+            $squoting = false;
+            $dquoting = false;
+            $lastchar = '';
+            for ($j = 0; $j < strlen($lines[$i]); $j++) {
+                $char = $lines[$i][$j];
+                if ($char == '\'') {
+                    $squoting = !$squoting;
+                }
+                if ($char == '"') {
+                    $dquoting = !$dquoting;
+                }
+                if (!$squoting && !$dquoting) {
+                    if ($char == '/' && $lastchar == '/') {
+                        $lines[$i] = substr($lines[$i], 0, $j - 1);
+                        break;
+                    }
+                }
+                $lastchar = $char;
+            }
+        }
+        $s = implode("\n", $lines);
 
-    return $s;
-  }
+        // remove multi-line comment
+        $s = preg_replace("/\/\*([\s\S]*?)\*\//", '', $s);
 
-  /**
-   * Remove all white space, except for after var statement.
-   * Also remove comments.
-   * @param string $s e.g. javascript
-   * @return string
-   */
-  private function minify($s) {
-    //
-    $s = $this->removeComment($s);
-
-    // escape
-    $search = array(
-      'var ',
-      'return ',
-      '&',
-      '"',
-    );
-    $replace = array(
-      'var%20',
-      'return%20',
-      '&amp;',
-      '&quot;',
-    );
-    $s = str_replace($search, $replace, $s);
-
-    // remove white space
-    $s = preg_replace('/\s+/', '', $s);
-
-    return $s;
-  }
-
-  private function renderScript() {
-    $script = $this->minify($this->script);
-    return "<hr><a href=\"javascript:(function(){" . $script .
-            "})();\">" . $this->link . "</a>";
-  }
-
-  private function renderFile() {
-
-    global $settings;
-
-    $file = file_get_contents($settings['scriptpath'] . $this->file);
-    $script = $this->minify($file);
-    return "<hr><a href=\"javascript:" . $script . "\">" . $this->link . "</a>\n";
-  }
-
-  public function makeTile() {
-    $html = '<div class="aux-content-widget">';
-    if (!empty($this->icon)) {
-      $html .= '<div class="icon ' . $this->icon . '"></div>'. "\n";
+        return $s;
     }
-    $html .= '<h1>' . $this->title . '</h1>';
-    $html .= '<h2>' . $this->subtitle . '</h2>';
-    $html .= '<div class="description">' . $this->body . '</div>' . "\n";
-    if (!empty($this->script)) {
-      $html .= $this->renderScript();
+
+    /**
+     * Remove all white space, except for after var statement.
+     * Also remove comments.
+     * @param string $s e.g. javascript
+     * @return string
+     */
+    private function minify($s) {
+        //
+        $s = $this->removeComment($s);
+
+        // escape
+        $search = array(
+            'var ',
+            'return ',
+            '&',
+            '"',
+            'function ',
+        );
+        $replace = array(
+            'var%20',
+            'return%20',
+            '&amp;',
+            '&quot;',
+            'function%20',
+        );
+        $s = str_replace($search, $replace, $s);
+
+        // remove white space
+        //$s = preg_replace('/\s+/', '', $s);
+        // replace white space to single spaces
+        $s = preg_replace('/\s+/', ' ', $s);
+
+        return $s;
     }
-    else if (!empty($this->file)) {
-      $html .= $this->renderFile();
+
+    private function renderScript() {
+        $script = $this->minify($this->script);
+        return "<hr><a href=\"javascript:(function(){" . $script .
+                "})();\">" . $this->link . "</a>";
     }
-    $html .= '</div>' . "\n";
-    return $html;
-  }
+
+    private function renderFile() {
+
+        global $settings;
+
+        $file = file_get_contents($settings['scriptpath'] . $this->file);
+        $script = $this->minify($file);
+        return "<hr><a href=\"javascript:" . $script . "\">" . $this->link . "</a>\n";
+    }
+
+    public function makeTile() {
+        $html = '<div class="aux-content-widget">';
+        if (!empty($this->icon)) {
+            $html .= '<div class="icon ' . $this->icon . '"></div>' . "\n";
+        }
+        $html .= '<h1>' . $this->title . '</h1>';
+        $html .= '<h2>' . $this->subtitle . '</h2>';
+        $html .= '<div class="description">' . $this->body . '</div>' . "\n";
+        if (!empty($this->script)) {
+            $html .= $this->renderScript();
+        } else if (!empty($this->file)) {
+            $html .= $this->renderFile();
+        }
+        $html .= '</div>' . "\n";
+        return $html;
+    }
+
 }
-
-?>
