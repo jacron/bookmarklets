@@ -61,18 +61,26 @@
       innerImg.length == 0  // skip icons
   ) {
         img = document.createElement('img');
-
+        
         img.onload = function() {
+            /*
           H = this.height;
           W = this.width;
-
+*/
+          H = this.naturalHeight;
+          W = this.naturalWidth;
           this.title += '\n' + W + 'x' + H;
-
+/*
           this.width = '300';
           this.style.height = 'auto';
           this.style.border = 'none';
-          this.style.margin = '2px';
+          this.style.margin = '2px';*/
         }
+        img.width = '300';
+        img.style.height = 'auto';
+        img.style.border = 'none';
+        img.style.margin = '2px';
+          
         img.src = href;
         img.title = unescape(linkText);
 
@@ -101,5 +109,12 @@
   body.appendChild(document.createElement('br'));
   for (i = 0; i < anchorsLen; i++) {
     body.appendChild(anchors[i]);
+  }
+  console.log('open: version=x');
+  if (pdLink) {
+    body.appendChild(document.createElement('br'));
+    body.appendChild(document.createElement('br'));
+    body.appendChild(pdLink.cloneNode(true));
+    body.appendChild(document.createElement('br'));
   }
 }());
