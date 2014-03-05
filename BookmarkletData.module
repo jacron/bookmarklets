@@ -37,23 +37,6 @@ $columns = array(
       'link' => 'title',
       'icon' => 'nmovies',
     ),
-    // Browser goback 3 x
-    array(
-      'title' => 'Misc',
-      'subtitle' => 'Back 3x',
-      'body' => 'Go back in history 3 times.',
-      'script' => 'history.go(-3);',
-      'link' => '&lt;3',
-    ),
-  ),
-  // column 2
-  array(
-    // A very short description
-    array(
-      'title' => 'How to...',
-      'subtitle' => 'Bookmarklet',
-      'body' => 'Drag one of the blue hyperlinks to your bookmarks bar, then try it out.',
-    ),
     // Google Bookmarks popup
     array(
       'title' => 'Google',
@@ -78,25 +61,6 @@ $columns = array(
       'link' => 'Get flickr',
       'icon' => 'flickr',
     ),
-    // YouTube popup
-      // ... doesn't work now
-      /*
-    array(
-      'title' => 'YouTube',
-      'subtitle' => 'Movie in popup',
-      'body' => "When in youtube.com, open the current video in a separate, resizeable window.",
-      'script' => "
-        url = document.location.href.replace('&','_and_');
-        url_yt = 'http://yplayer:8080';
-        specs = 'width=800,height=500,resizable=1';
-        if (url.indexOf('youtube.com') != -1){
-          window.open(url_yt + '?url=' + url, 'w', specs);
-        }
-      ",
-      'link' => 'yplayer',
-      'icon' => 'youtube',
-    ),*/
-  ),
   // column 3
   array(
     // NOS Teletekst in a popup
@@ -133,5 +97,5 @@ $columns = array(
       'icon' => 'image'
     ),
   )
+)
 );
-

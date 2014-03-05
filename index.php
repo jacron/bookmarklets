@@ -39,15 +39,6 @@ $settings = array(
         $openerJs3 = 'http://' . $_SERVER['HTTP_HOST'] . '/scripts/opener3.js';
         ?>
     <div class="clear"></div>
-    <!--
-        <div class="script-bm">
-<a href="javascript:void(function(){s=document.createElement('script');s.src='<?=$openerJs?>';document.body.appendChild(s);})();">
-opener2</a>
-          (nieuw: met jquery! - sleep deze link naar je bookmark bar)</div>
-        <div class="script-bm">
-<a href="javascript:void(function(){s=document.createElement('script');s.src='<?=$openerJs3?>';document.body.appendChild(s);})();">
-opener3</a></div>
-  </div>-->
   <div class="footer">
     <a id="perfect-site" href="http://jcroonen.nl">jcroonen.nl</a> |
     <a href="http://jcroonen.nl/assets/images/boek/9043007242.jpg">boekje</a> |
