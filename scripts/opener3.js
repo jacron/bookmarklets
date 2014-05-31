@@ -48,6 +48,8 @@
         links = document.links,
         linksLen = links.length,
         i,
+        hasHttpProtocol,
+        hasFtpProtocol,
         href,
         img,
         anchor,
@@ -60,6 +62,7 @@
         innerImg,
         node;
 
+    //console.log(links);
     for (i = 0; i < linksLen; i+=1) {
         link = links[i];
         href = link.href;
@@ -69,7 +72,9 @@
         if (linkText.trim() === 'Parent Directory') {
             pdLink = link;
         }
-        if (href.indexOf('http') === 0 &&
+        hasHttpProtocol = href.indexOf('http') === 0;
+        hasFtpProtocol = href.indexOf('ftp') === 0;
+        if ((hasHttpProtocol || hasFtpProtocol) &&
                 hasGraphExtension(href) &&
                 innerImg.length === 0  // skip icons
                 ) {
