@@ -6,29 +6,36 @@
     var Settings = {
         app: {
             name: 'ReadText',
-            version: '1.2'
+            version: '1.3'
         },
         ids: {
             alert: 'rt-message',
-            button: 'rt-button',
+            closer: 'rt-button',
             container: 'rt-container',
             header: 'rt-header',
             style: 'rt-style'
         },
         styles: {
-            container: 'padding: 24px; ' +
-                'font-family: chaparral-regular, chaparral-pro, serif !important;',
-            alert: 'position:fixed; top:6px; left:0px; ' +
+            container: 'padding: 30px 90px; ' +
+                'font-family: chaparral-regular, chaparral-pro, serif !important;' +
+                'max-height: 900px; overflow-y: auto; overflow-x: hidden;',
+            alert: 'position:fixed; top:12px;' +
                 'color:#222; background-color: rgba(250,250,240,0.99); ' +
-                'padding:0; z-index:99; width: 690px;' +
+                'padding:0; z-index:999; width: 720px;' +
                 'font-size:19px; line-height: 1.7;' +
-                'margin: 0 10%; box-shadow: 0 6px 12px rgba(0,0,0,0.175);',
+                'margin: 0 10%; ' +
+                'border: 1px solid #ccc; box-shadow: 0 6px 12px rgba(0,0,0,0.175);',
             closeButton:
-                    'background:brown;color:yellow; padding: 0 10px 3px;' +
                     'text-align: right;font-weight: bold; font-size: 20px;' +
-                    'cursor: default; opacity: 0.6;',
-            header: 'float:left',
-            hide: 'display: none'
+                    'cursor: default; position: absolute; right: 12px;' +
+                    'color: #bbb;',
+            header: 'width: 100%; ' +
+                    'padding: 3px 0 10px 12px;' +
+                    'float:left; color:#999;',
+            hide: 'display: none',
+            styleTag: '@font-face { font-family:chaparral-regular;' +
+            "src:url('http://read.text:85/fonts/ChaparralPro-Regular.otf') format('opentype')}" +
+            '#rt-button:hover{color:red !important;}'
         }
     };
 
@@ -43,8 +50,9 @@
             window.document.body.appendChild(box);
         }
         else {
-            // Show the box and that's it.
+            // Show the box, replace the text and that's it.
             box.setAttribute('style', Settings.styles.alert);
+            container.textContent = text;
             return;
         }
         if (!header) {
@@ -69,9 +77,7 @@
 
         tag.id = Settings.ids.style;
         tag.setAttribute('type', 'text/css');
-        tag.textContent = '@font-face { font-family:chaparral-regular;' +
-            "src:url('http://read.text:85/fonts/ChaparralPro-Regular.otf') format('opentype')}" +
-            '#rt-button:hover{color:red;}';
+        tag.textContent = Settings.styles.styleTag;
         return tag;
     }
 
@@ -97,8 +103,8 @@
             header = document.createElement('div');
 
         closer.innerHTML = 'x';
-        div.setAttribute('style', Settings.styles.closeButton);
-        closer.id = Settings.ids.button;
+        closer.setAttribute('style', Settings.styles.closeButton);
+        closer.id = Settings.ids.closer;
         closer.addEventListener('click', function() {
             box.setAttribute('style', Settings.styles.hide);
         });
