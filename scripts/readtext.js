@@ -1,12 +1,15 @@
 /*
  * Author: jan
  * Date: 15-mei-2014
+ * http://jslint.com
  */
+'use strict';
+
 (function(){
     var Settings = {
         app: {
             name: 'ReadText',
-            version: '1.3'
+            version: '1.4'
         },
         ids: {
             alert: 'rt-message',
@@ -39,6 +42,27 @@
         }
     };
 
+    function displayHost(host) {
+        var container = null, sections, i;
+
+        switch(host) {
+            case 'readwrite.com':
+                sections = document.getElementsByTagName('section');
+                for (i = 0; i < sections.length; i += 1) {
+                    if (sections[i].getAttribute('itemprop') === 'articleBody') {
+                        container = sections[i];
+                    }
+                }
+                if (!container) {
+                    return null;
+                }
+                displayText(container.innerHTML);
+                break;
+            default:
+                return null;
+        }
+    }
+
     function displayText(text) {
         var box = document.getElementById(Settings.ids.alert),
             header = document.getElementById(Settings.ids.header),
@@ -52,7 +76,8 @@
         else {
             // Show the box, replace the text and that's it.
             box.setAttribute('style', Settings.styles.alert);
-            container.textContent = text;
+            //container.textContent = text;
+            container.innerHTML = text;
             return;
         }
         if (!header) {
@@ -118,16 +143,24 @@
         return div;
     }
 
+    /*
+     * Start here
+     */
     var  href = document.location.href,
+         host = location.host,
          link = encodeURIComponent(href),
          sel = getSelection(),
          text = sel.toString();
 
+//console.debug(host);
+//console.debug(Settings.app.version);
     if (text.length) {
         displayText(text);
     }
     else {
-        document.location.href = 'http://read.text:85/?link=' + link;
+        if (!displayHost(host)) {
+            //document.location.href = 'http://read.text:85/?link=' + link;
+        }
     }
 
 }());
