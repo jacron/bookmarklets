@@ -9,7 +9,7 @@
     var Settings = {
         app: {
             name: 'ReadText',
-            version: '1.4'
+            version: '1.5'
         },
         ids: {
             alert: 'rt-message',
@@ -159,7 +159,7 @@
     }
     else {
         if (!displayHost(host)) {
-            //document.location.href = 'http://read.text:85/?link=' + link;
+            document.location.href = 'http://read.text:85/?link=' + link;
         }
     }
 
