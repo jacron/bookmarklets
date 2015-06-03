@@ -11,6 +11,7 @@
             name: 'ReadText',
             version: '1.5'
         },
+        readhost: 'http://read.text', // op neptunus port toevoegen:85
         ids: {
             alert: 'rt-message',
             closer: 'rt-button',
@@ -36,32 +37,12 @@
                     'padding: 3px 0 10px 12px;' +
                     'float:left; color:#999;',
             hide: 'display: none',
+
             styleTag: '@font-face { font-family:chaparral-regular;' +
-            "src:url('http://read.text:85/fonts/ChaparralPro-Regular.otf') format('opentype')}" +
+            "src:url(" + this.readhost + "/fonts/ChaparralPro-Regular.otf') format('opentype')}" +
             '#rt-button:hover{color:red !important;}'
         }
     };
-
-    function displayHost(host) {
-        var container = null, sections, i;
-
-        switch(host) {
-            case 'readwrite.com':
-                sections = document.getElementsByTagName('section');
-                for (i = 0; i < sections.length; i += 1) {
-                    if (sections[i].getAttribute('itemprop') === 'articleBody') {
-                        container = sections[i];
-                    }
-                }
-                if (!container) {
-                    return null;
-                }
-                displayText(container.innerHTML);
-                break;
-            default:
-                return null;
-        }
-    }
 
     function displayText(text) {
         var box = document.getElementById(Settings.ids.alert),
@@ -143,6 +124,21 @@
         return div;
     }
 
+    function displayReadWriteCom() {
+        var container = null,
+            sections = document.getElementsByTagName('section'),
+            i;
+
+        for (i = 0; i < sections.length; i += 1) {
+            if (sections[i].getAttribute('itemprop') === 'articleBody') {
+                container = sections[i];
+            }
+        }
+        if (container) {
+            displayText(container.innerHTML);
+        }
+    }
+
     /*
      * Start here
      */
@@ -152,14 +148,16 @@
          sel = getSelection(),
          text = sel.toString();
 
-//console.debug(host);
-//console.debug(Settings.app.version);
     if (text.length) {
+        // Op deze pagina is tekst geselecteerd
         displayText(text);
     }
     else {
-        if (!displayHost(host)) {
-            document.location.href = 'http://read.text:85/?link=' + link;
+        if (host === 'readwrite.com') {
+            displayReadWriteCom(); // NB dit werkt niet (meer)!
+        }
+        else {
+            document.location.href = Settings.readhost + '/?link=' + link;
         }
     }
 
