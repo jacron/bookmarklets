@@ -31,7 +31,7 @@ $settings = array(
 </head>
 <body>
 <div id="pagecontent">
-  <div class="title"><?=$title ?></div>
+  <div class="title">* <?=$title ?> *</div>
   <div class="content">
     <?php print View::renderTiles(); ?>
         <?php

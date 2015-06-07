@@ -27,7 +27,7 @@
         if (printLink) {
             cssParm = '&pcss=' + encodeURIComponent(printLink.href);
         }
-        redirect = 'http://read.text:85/' + urlParm + cssParm;
+        redirect = 'http://read.text/' + urlParm + cssParm;
         //console.log(redirect);
         document.location.href = redirect;
 

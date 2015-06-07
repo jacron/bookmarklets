@@ -39,7 +39,7 @@
             hide: 'display: none',
 
             styleTag: '@font-face { font-family:chaparral-regular;' +
-            "src:url(" + this.readhost + "/fonts/ChaparralPro-Regular.otf') format('opentype')}" +
+            "src:url(http://read.text/fonts/ChaparralPro-Regular.otf') format('opentype')}" +
             '#rt-button:hover{color:red !important;}'
         }
     };
@@ -157,7 +157,7 @@
             displayReadWriteCom(); // NB dit werkt niet (meer)!
         }
         else {
-            //console.log('readhost', Settings.readhost);
+            console.log('readhost', Settings.readhost);
             document.location.href = Settings.readhost + '/?link=' + link;
         }
     }
