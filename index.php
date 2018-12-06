@@ -42,6 +42,13 @@ if (isset($_REQUEST['script'])) {
         <?php print View::renderTiles(); ?>
         <div class="clear"></div>
         <?php print View::renderFooter(); ?>
+        <?php
+        if (!isset($_REQUEST['special'])) {
+            ?>
+            <a href="?special=own">special own</a>
+            <?php
+        }
+        ?>
     </div>
 </div>
 </body>
