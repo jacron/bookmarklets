@@ -11,11 +11,13 @@
      * This bookmarklet will try and insert an image tag for
      * each link to a file that has the extension jpg or png.
      * Also it will provide a nice header including the link to Parent Directory.
-     * It will attach an informative tooltip to each image.
+     * It will attach an informative tooltip to each image, displaying the size.
      * The existing list of links will be removed.
      *
      * Author: Jan Croonen 2013.
      */
+    var name = "opener3";
+    var version = 1.0;
 
     function hasGraphExtension(s) {
         var p,
@@ -62,7 +64,6 @@
         innerImg,
         node;
 
-    //console.log(links);
     for (i = 0; i < linksLen; i+=1) {
         link = links[i];
         href = link.href;
@@ -81,15 +82,18 @@
             img = document.createElement('img');
 
             img.onload = function() {
-                this.title += '\n' + this.naturalWidth + 'x' + this.naturalHeight;
+                this.title = this.naturalWidth + 'x' + this.naturalHeight;
+                if (this.naturalWidth > 1000) {
+                    this.style.border = '1px solid red';
+                }
             };
             img.width = '300';
             img.style.height = 'auto';
-            img.style.border = 'none';
+            //img.style.border = 'none';
             img.style.margin = '2px';
 
             img.src = href;
-            img.title = unescape(linkText);
+            //img.title = unescape(linkText);
 
             anchor = document.createElement('a');
             anchor.href = href;
@@ -116,7 +120,6 @@
     for (i = 0; i < anchorsLen; i+=1) {
         body.appendChild(anchors[i]);
     }
-    //console.log('open: version=x');
     if (pdLink) {
         bodyAppendElements('br', 2);
         body.appendChild(pdLink.cloneNode(true));

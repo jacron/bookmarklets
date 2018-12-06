@@ -5,7 +5,27 @@
  * @file
  * Holds data for bookmarklets.
  */
+function scriptLoad($f, $url) {
+    return
+        "
+        f = '$f';
+        d = document;
+        s = d.createElement('script');
+        s.src='$url' + f;
+        d.body.appendChild(s);
+      ";
+}
 $tiles = array(
+    // Read.text
+    array(
+        'title' => 'Read text v.2',
+        'subtitle' => 'Tekst netjes lezen',
+        'body' => "",
+        'file' => 'readtext3.js',
+        'script' => scriptLoad('readtext3.js?v=2.0', 'http://bookmarklets/scripts/'),
+        'link' => 'read4',
+        'icon' => '',
+    ),
   // IMDb External Reviews
   array(
     'title' => 'IMDb',

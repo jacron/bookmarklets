@@ -170,3 +170,17 @@ td{
   padding-left: 8px;
   width: 300px;
 }
+.script-body {
+    display: none;
+    background-color: #fff;
+    padding: 8px;
+    white-space: pre-wrap;
+    position: absolute;
+    font-family: Consolas, "courier new";
+    margin-top: -110px;
+    overflow-y: auto;
+    height: 90px;
+}
+.script-link:hover .script-body {
+    display: block;
+}

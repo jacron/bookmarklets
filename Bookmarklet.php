@@ -105,43 +105,48 @@ class Bookmarklet {
         );
         $s = str_replace($search, $replace, $s);
 
-        // remove white space
-        //$s = preg_replace('/\s+/', '', $s);
         // replace white space to single spaces
         $s = preg_replace('/\s+/', ' ', $s);
 
         return $s;
     }
 
-    private function renderScript() {
-        $script = $this->minify($this->script);
-        return "<hr><a href=\"javascript:(function(){" . $script .
-                "})();\">" . $this->link . "</a>";
-    }
-
-    private function renderFile() {
-
-        global $settings;
-
-        $file = file_get_contents($settings['scriptpath'] . $this->file);
-        $script = $this->minify($file);
-        return "<hr><a href=\"javascript:" . $script . "\">" . $this->link . "</a>\n";
-    }
-
     public function makeTile() {
-        $html = '<div class="aux-content-widget">';
-        if (!empty($this->icon)) {
-            $html .= '<div class="icon ' . $this->icon . '"></div>' . "\n";
-        }
-        $html .= '<h1>' . $this->title . '</h1>';
-        $html .= '<h2>' . $this->subtitle . '</h2>';
-        $html .= '<div class="description">' . $this->body . '</div>' . "\n";
+        global $settings;
+        $template = <<<EOT
+<div class="aux-content-widget">
+    <div class="icon @icon"></div>
+    <h1>@title</h1>
+    <h2>@subtitle</h2>
+    <div class="description">@body</div>
+    <hr>
+    <div class="script-link">
+        <a href="javascript:@script_href">@script_text</a>
+        <div class="script-body">@script_href</div>        
+    </div>
+    <a href="?script=@file">@file</a>
+</div>
+EOT;
+        $script_href = '';
         if (!empty($this->script)) {
-            $html .= $this->renderScript();
+            $script = $this->minify($this->script);
+            $script_href = '(function(){' . $script . '})()';
         } else if (!empty($this->file)) {
-            $html .= $this->renderFile();
+            $file = file_get_contents($settings['scriptpath'] . $this->file);
+            $script_href = $this->minify($file);
         }
-        $html .= '</div>' . "\n";
+        $placeholders = ['@icon', '@title', '@subtitle', '@body',
+            '@script_href', '@script_text', '@file'];
+        $data = [
+            $this->icon,
+            $this->title,
+            $this->subtitle,
+            $this->body,
+            $script_href,
+            $this->link,
+            $this->file
+        ];
+        $html = str_replace($placeholders, $data, $template);
         return $html;
     }
 

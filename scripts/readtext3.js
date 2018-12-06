@@ -3,15 +3,16 @@
  * Date: 15-mei-2014
  * http://jslint.com
  */
+/*global $*/
 'use strict';
 
 (function(){
     var Settings = {
         app: {
             name: 'ReadText',
-            version: '1.8'
+            version: '2.0'
         },
-        readhost: 'http://read.text', // op neptunus port toevoegen:85
+        readhost: 'http://read.text',
         ids: {
             alert: 'rt-message',
             closer: 'rt-button',
@@ -23,6 +24,10 @@
             container: 'padding: 30px 90px; ' +
                 'font-family: chaparral-regular, chaparral-pro, serif !important;' +
                 'max-height: 900px; overflow-y: auto; overflow-x: hidden;',
+            container2: 'padding: 30px 60px; ' +
+            'font-family: chaparral-regular, chaparral-pro, serif !important;' +
+            'font-size:20px;background-color:rgba(250,250,240,0.99);',
+            container3: 'padding: 30px 60px;background-color:rgba(250,250,240,0.99);',
             alert: 'position:fixed; top:12px;' +
                 'color:#222; background-color: rgba(250,250,240,0.99); ' +
                 'padding:0; z-index:999; width: 720px;' +
@@ -44,7 +49,23 @@
         }
     };
 
-    function displayText(text) {
+    function AjaxRequest(){
+        var activexmodes=["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"]; //activeX versions to check for in IE
+        if (window.ActiveXObject){ //Test for support for ActiveXObject in IE first (as XMLHttpRequest in IE7 is broken)
+            for (var i=0; i<activexmodes.length; i++){
+                try{
+                    return new ActiveXObject(activexmodes[i])
+                }
+                catch(e){
+                    //suppress error
+                }
+            }
+        }
+        else if (window.XMLHttpRequest) // if Mozilla, Safari etc
+            return new XMLHttpRequest();
+    }
+
+    function displayText(text, mode) {
         var box = document.getElementById(Settings.ids.alert),
             header = document.getElementById(Settings.ids.header),
             container = document.getElementById(Settings.ids.container),
@@ -57,9 +78,6 @@
         else {
             // Show the box, replace the text and that's it.
             box.setAttribute('style', Settings.styles.alert);
-            //container.textContent = text;
-            container.innerHTML = text;
-            return;
         }
         if (!header) {
             header = divHeader(box);
@@ -72,7 +90,12 @@
         }
 
         box.appendChild(header);
-        container.textContent = text;
+        if (mode) {
+            container.innerHTML = text;
+        }
+        else {
+            container.textContent = text;
+        }
         box.appendChild(container);
         window.document.body.appendChild(box);
         window.document.body.appendChild(styleTag);
@@ -135,28 +158,98 @@
             }
         }
         if (container) {
-            displayText(container.innerHTML);
+            displayText(container.innerHTML, true);
         }
+    }
+
+    function displayFilosofieNl() {
+        var article = document.getElementsByTagName('article');
+
+        if (article) {
+            var content = article[0].innerHTML,
+                title = document.title;
+            $.post(Settings.readhost, { // $ only exists when site has jquery
+               content: content,
+                title: title,
+                url: document.location.href
+            }).done(function(){
+                document.location.href = Settings.readhost + '/?render=' + title.replace(' ', '_');
+            });
+        }
+    }
+
+    function postFtArticle(article) {
+        const req = new AjaxRequest();
+        if (req) {
+            req.onreadystatechange = function() {
+                if (req.readyState === 4) {
+                    if (req.status === 200) {
+                        console.log(req.responseText);
+                        document.location.href = Settings.readhost + '/?render=' +
+                            document.title.replace(' ', '_');
+                    }
+                }
+            };
+            const content = encodeURIComponent(article),
+                title = encodeURIComponent(document.title),
+                url = encodeURIComponent(document.location.href),
+                parms = "content=" + content + "&title=" + title + "&url=" + url;
+            req.open('POST', Settings.readhost, true);
+            req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            req.send(parms);
+        }
+    }
+
+    function readFinancialTimes() {
+        const article = document.querySelector('.article__content');
+        console.log(article);
+        if (article) {
+            postFtArticle(article);
+            return true;
+        }
+        return false;
+    }
+
+    function displayHost(host) {
+        if (host === 'readwrite.com') {
+            displayReadWriteCom(); // NB dit werkt niet (meer)!
+            return true;
+        }
+        if (host === 'www.filosofie.nl') {
+            displayFilosofieNl();
+            return true;
+        }
+        if (host === 'www.ft.com') {
+            return readFinancialTimes();
+        }
+        return false;
+    }
+
+    function replaceBodyByText(sel) {
+        var range = sel.getRangeAt(0),
+            content = range.extractContents(),
+            span = document.createElement('span');
+
+        span.appendChild(content);
+        var htmlContent = span.innerHTML;
+        document.body.innerHTML = html;
+        document.body.setAttribute('style', Settings.styles.container3);
     }
 
     /*
      * Start here
      */
-    var  href = document.location.href,
-         host = location.host,
-         link = encodeURIComponent(href),
-         sel = getSelection(),
-         text = sel.toString();
+    var host = location.host,
+        link = encodeURIComponent(document.location.href),
+        sel = getSelection(),
+        text = sel.toString();
 
     if (text.length) {
         // Op deze pagina is tekst geselecteerd
-        displayText(text);
+        replaceBodyByText(sel);
     }
     else {
-        if (host === 'readwrite.com') {
-            displayReadWriteCom(); // NB dit werkt niet (meer)!
-        }
-        else {
+        if (!displayHost(host)){
             console.log('readhost', Settings.readhost);
             document.location.href = Settings.readhost + '/?link=' + link;
         }
