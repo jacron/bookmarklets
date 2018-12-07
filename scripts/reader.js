@@ -8,7 +8,7 @@
  * Chrome kan advertenties beter blokkeren dan Safari.
  * Misschien is deze reader nog mooier dan die van Safari.
  * Hij past zich aan aan de host.
- * NB dit is een eenvoudiger oplossing dan mijn reader.text met zijn drukke back-end
+ * NB dit is een eenvoudiger en snellere oplossing dan mijn reader.text met zijn drukke back-end
  * activiteiten.
  */
 'use strict';
@@ -16,9 +16,19 @@
 (function(){
     const styles = {
         article: 'box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 12px 3px;; ' +
-        'padding: 30px 60px; min-height: 100%; margin: 22px auto 0 auto; max-width: 94ex;' +
+        'padding: 30px 60px; ' +
+        'min-height: 100%; ' +
+        'margin: 22px auto 0 auto; ' +
+        'max-width: 94ex;' +
         'background-color:rgba(250,250,240,0.99);',
-        container: 'height: calc(100% - 44px); font-family: Georgia;'
+        article2:'box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 12px 3px;; ' +
+        'padding: 30px 60px; ' +
+        // 'min-height: 100%; ' +
+        'margin: 22px auto 0 auto; ' +
+        'max-width: 800px;' +
+        'background-color:rgba(250,250,240,0.99);',
+        body: 'height: calc(100% - 44px); font-family: Georgia;',
+        closer: 'display: inline-block;float: right; cursor:pointer; padding: 4px;'
     };
 
     const sites = [
@@ -68,8 +78,31 @@
                 'figure.article__featured-image',
                 '.article-container.main'
             ]
+        },
+        {
+            host: 'stackoverflow.com',
+            selector: [
+                '#question-header',
+                ['#mainbar', 'width: 100%']
+            ],
+            article_style: 'article2'
+        },
+        {
+            host: 'www.washingtonpost.com',
+            selector: [
+                '#top-content',
+                '#article-body'
+            ]
+        },
+        {
+            host: 'www.nytimes.com',
+            selector: [
+                'h1[itemprop=headline]',
+                'section[itemprop=articleBody]'
+            ]
         }
     ];
+    var saved_body = null;
 
     function getSite(host) {
         for (var i = 0; i < sites.length; i++) {
@@ -80,13 +113,8 @@
         return null;
     }
 
-    function replaceBodyByText(site) {
-        const
-            header = document.querySelector(site.selector.header),
-            content = document.querySelector(site.selector.body),
-            container = document.createElement('div'),
-            article = document.createElement('div')
-        ;
+    function getNodes(site) {
+        var nodes = [];
         for (var i = 0; i < site.selector.length; i++) {
             var selector = site.selector[i];
             var style = null;
@@ -99,34 +127,91 @@
                 }
             }
             const node = document.querySelector(selector);
-            var article_empty = true;
             if (node) {
                 if (style) {
                     node.setAttribute('style', style);
                 }
-                article.appendChild(node);
-                article_empty = false;
+                nodes.push(node);
             } else {
                 console.log(site.selector[i] + ' is not a node');
             }
         }
-        if (!article_empty) {
-            container.appendChild(article);
-            container.setAttribute('style', styles.container);
-            article.setAttribute('style', styles.article);
-            document.body.innerHTML = container.innerHTML;
-            document.body.setAttribute('style', styles.container);
+        return nodes;
+    }
+
+    function getArticleStyle(site) {
+        if (site && site.article_style) {
+            return styles[site.article_style];
+        }
+        return styles.article;
+    }
+
+    function createCloser() {
+        const
+            closer = document.createElement('div');
+        closer.id = 'closer';
+        closer.setAttribute('style', styles.closer);
+        closer.innerHTML = 'x';
+        closer.setAttribute('title', 'Close');
+        // waarom werkt dit niet?
+        closer.addEventListener('click', function () {
+            console.log(saved_body);
+            if (saved_body) {
+                document.body.innerHTML = saved_body;
+            }
+        });
+        return closer;
+    }
+
+    function replaceContent(content, site) {
+        const
+            container = document.createElement('div'),
+            article = document.createElement('div')
+        ;
+        // article.appendChild(createCloser());
+        article.appendChild(content);
+        container.appendChild(article);
+        article.setAttribute('style', getArticleStyle(site));
+        // saved_body = document.body.innerHTML;
+        document.body.innerHTML = container.innerHTML;
+        document.body.setAttribute('style', styles.body);
+    }
+
+    function replaceBodyByText(site) {
+        const
+            content = document.createElement('div'),
+            nodes = getNodes(site)
+        ;
+        if (nodes.length > 0) {
+            for (var i = 0; i < nodes.length; i++) {
+                content.appendChild(nodes[i]);
+            }
+            replaceContent(content, site);
         } else {
             console.log('No content for reader found');
         }
     }
 
+    function replaceBodyBySelection(sel) {
+        var range = sel.getRangeAt(0),
+            content = range.extractContents();
+
+        replaceContent(content);
+    }
+
     /*
      * Start here
      */
-    const site = getSite(location.host);
-    if (site) {
-        replaceBodyByText(site);
-    }
+    const sel = getSelection(),
+        text = sel.toString();
 
+    // if (text.length) {
+    //     replaceBodyBySelection(sel);
+    // } else
+    //     {
+        const site = getSite(location.host);
+        if (site) {
+            replaceBodyByText(site);
+        }
+    // }
 }());
