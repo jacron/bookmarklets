@@ -108,6 +108,13 @@
                 'h1[itemprop=headline]',
                 'section[itemprop=articleBody]'
             ]
+        },
+        {
+            host: 'www.macworld.com',
+            selector: [
+                'h1[itemprop=headline]',
+                'section.bodee'
+            ]
         }
     ];
     var saved_body = null;
@@ -164,25 +171,42 @@
         return cmdbutton;
     }
 
-    function createClass(rule){
+    function createStylesheet(rules){
         var style = document.createElement('style');
         style.type = 'text/css';
-        style.innerHTML = rule;
+        style.innerHTML = rules.join('\n');
+        style.id = 'added-style';
         document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function removeStylesheet() {
+        const style = document.getElementById('added-style');
+        if (style) {
+            style.parentNode.removeChild(style);
+        }
     }
 
     function toggleDarkMode() {
         // todo: toggle dark mode
-        // todo: save setting in localstorage
         if (localStorage.getItem('darkmode') !== 'on') {
-            document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.76';
-            createClass('a, span, body, h1 {color: rgba(255, 255, 255, 0.78)!important;}');
-            const readerarticle = document.getElementById('readerarticle');
-            readerarticle.style.backgroundColor = 'rgb(174, 174, 177, 0.20)';
-            readerarticle.style.boxShadow = '0px 6px 12px 3px rgba(0, 0, 0, 0.24)';
+            const rules = [
+                'a, span, body, h1, div {color: rgba(255, 255, 255, 0.78) !important; }',
+                'body {background-color: rgba(0, 0, 0, 0.76); }',
+                '#readerarticle img {margin: 0 -60px; width: calc(100% + 120px); }',
+                '#readerarticle { ' +
+                'background-color: rgb(174, 174, 177, 0.20) !important;' +
+                'box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.24); ' +
+                '}'
+            ];
+            removeStylesheet();
+            createStylesheet(rules);
             localStorage.setItem('darkmode', 'on')
         } else {
-            localStorage.setItem('darkmode', 'off')
+            localStorage.setItem('darkmode', 'off');
+            removeStylesheet();
+            createStylesheet([
+                '#readerarticle img {margin: 0 -60px; width: calc(100% + 120px); }'
+            ]);
         }
     }
 
