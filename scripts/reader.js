@@ -10,10 +10,12 @@
  * Hij past zich aan aan de host.
  * NB dit is een eenvoudiger en snellere oplossing dan mijn reader.text met zijn drukke back-end
  * activiteiten.
+ * Er is ook nog een knopje bijgekomen om dark mode aan of uit te zetten.
  */
 'use strict';
 
 (function(){
+
     const styles = {
         article: 'box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 12px 3px;; ' +
         'padding: 30px 60px; ' +
@@ -23,20 +25,32 @@
         'background-color:rgba(250,250,240,0.99);',
         article2:'box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 12px 3px;; ' +
         'padding: 30px 60px; ' +
-        // 'min-height: 100%; ' +
         'margin: 22px auto 0 auto; ' +
         'max-width: 800px;' +
         'background-color:rgba(250,250,240,0.99);',
         body: 'height: calc(100% - 44px); font-family: Georgia;',
-        closer: 'display: inline-block; ' +
-        'position: absolute; ' +
-        'cursor:pointer; ' +
-        'padding: 2px 8px; ' +
-        'background-color: rgba(120, 120, 120, 0.45); ' +
-        'border-radius: 6px;' +
-        'margin-left: 500px;' +
-        'z-index: 1; color: #fff; font-weight: bold;' +
-        'margin-top: -24px;'
+        cmdbutton:
+            'display: inline-block;' +
+            'cursor: pointer; ' +
+            'padding: 2px 8px; ' +
+            'border-radius: 6px;' +
+            'z-index: 1; ' +
+            'font-weight: bold;',
+        darktheme: [
+            'a, p, span, body, h1, h2, i, div, time {color: rgba(255, 255, 255, 0.78) !important; }',
+            'body {background-color: rgba(0, 0, 0, 0.76); }',
+            '#readerarticle { ' +
+            'background-color: rgb(174, 174, 177, 0.20) !important;' +
+            'box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.24); ' +
+            '}' +
+            '#cmdbutton:hover {background-color: #666; }' +
+            'color: #fff; '
+        ],
+        defaulttheme: [
+            '#readerarticle img, #readerarticle figure {margin: 0 -60px; width: calc(100% + 120px); }' +
+            '#cmdbutton:hover {background-color: #cfcfcf; }' +
+            '#cmdcontainer{width: 100%; text-align: right}'
+        ]
     };
 
     const sites = [
@@ -133,6 +147,7 @@
         for (var i = 0; i < site.selector.length; i++) {
             var selector = site.selector[i];
             var style = null;
+            // sommige sites, bijv. Trouw, hebben een specifieke style bij een selector
             if (Array.isArray(selector)) {
                 if (selector.length === 2) {
                     style = selector[1];
@@ -163,50 +178,39 @@
 
     function createCmdButton() {
         const
+            cmdcontainer = document.createElement('div'),
             cmdbutton = document.createElement('div');
         cmdbutton.id = 'cmdbutton';
-        cmdbutton.setAttribute('style', styles.closer);
+        cmdbutton.setAttribute('style', styles.cmdbutton);
         cmdbutton.innerHTML = 'o';
         cmdbutton.setAttribute('title', 'Toggle dark mode');
-        return cmdbutton;
+        cmdcontainer.id = 'cmdcontainer';
+        cmdcontainer.appendChild(cmdbutton);
+        return cmdcontainer;
     }
 
-    function createStylesheet(rules){
+    function createStylesheet(rules, id){
         var style = document.createElement('style');
         style.type = 'text/css';
         style.innerHTML = rules.join('\n');
-        style.id = 'added-style';
+        style.id = id;
         document.getElementsByTagName('head')[0].appendChild(style);
     }
 
-    function removeStylesheet() {
-        const style = document.getElementById('added-style');
+    function removeStylesheet(id) {
+        const style = document.getElementById(id);
         if (style) {
             style.parentNode.removeChild(style);
         }
     }
 
     function toggleDarkMode() {
-        // todo: toggle dark mode
         if (localStorage.getItem('darkmode') !== 'on') {
-            const rules = [
-                'a, span, body, h1, div {color: rgba(255, 255, 255, 0.78) !important; }',
-                'body {background-color: rgba(0, 0, 0, 0.76); }',
-                '#readerarticle img {margin: 0 -60px; width: calc(100% + 120px); }',
-                '#readerarticle { ' +
-                'background-color: rgb(174, 174, 177, 0.20) !important;' +
-                'box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.24); ' +
-                '}'
-            ];
-            removeStylesheet();
-            createStylesheet(rules);
+            createStylesheet(styles.darktheme, 'dark');
             localStorage.setItem('darkmode', 'on')
         } else {
             localStorage.setItem('darkmode', 'off');
-            removeStylesheet();
-            createStylesheet([
-                '#readerarticle img {margin: 0 -60px; width: calc(100% + 120px); }'
-            ]);
+            removeStylesheet('dark');
         }
     }
 
@@ -244,13 +248,6 @@
         }
     }
 
-    function replaceBodyBySelection(sel) {
-        var range = sel.getRangeAt(0),
-            content = range.extractContents();
-
-        replaceContent(content);
-    }
-
     /*
      * Start here
      */
@@ -258,7 +255,7 @@
 
     if (site) {
         replaceBodyByText(site);
-        // console.log(localStorage.getItem('darkmode'));
+        createStylesheet(styles.defaulttheme, 'default');
         if (localStorage.getItem('darkmode') === 'on') {
             localStorage.setItem('darkmode', 'off')
             toggleDarkMode();
