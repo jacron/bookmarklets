@@ -28,7 +28,15 @@
         'max-width: 800px;' +
         'background-color:rgba(250,250,240,0.99);',
         body: 'height: calc(100% - 44px); font-family: Georgia;',
-        closer: 'display: inline-block;float: right; cursor:pointer; padding: 4px;'
+        closer: 'display: inline-block; ' +
+        'position: absolute; ' +
+        'cursor:pointer; ' +
+        'padding: 2px 8px; ' +
+        'background-color: rgba(120, 120, 120, 0.45); ' +
+        'border-radius: 6px;' +
+        'margin-left: 500px;' +
+        'z-index: 1; color: #fff; font-weight: bold;' +
+        'margin-top: -24px;'
     };
 
     const sites = [
@@ -44,7 +52,7 @@
         {
             host: 'www.theguardian.com',
             selector: [
-                '.content__head',
+                '.content__headline-standfirst-wrapper',
                 ['.content__article-body', 'font-size: 20px; line-height: 28px;']
             ]
         },
@@ -146,21 +154,36 @@
         return styles.article;
     }
 
-    function createCloser() {
+    function createCmdButton() {
         const
-            closer = document.createElement('div');
-        closer.id = 'closer';
-        closer.setAttribute('style', styles.closer);
-        closer.innerHTML = 'x';
-        closer.setAttribute('title', 'Close');
-        // waarom werkt dit niet?
-        closer.addEventListener('click', function () {
-            console.log(saved_body);
-            if (saved_body) {
-                document.body.innerHTML = saved_body;
-            }
-        });
-        return closer;
+            cmdbutton = document.createElement('div');
+        cmdbutton.id = 'cmdbutton';
+        cmdbutton.setAttribute('style', styles.closer);
+        cmdbutton.innerHTML = 'o';
+        cmdbutton.setAttribute('title', 'Toggle dark mode');
+        return cmdbutton;
+    }
+
+    function createClass(rule){
+        var style = document.createElement('style');
+        style.type = 'text/css';
+        style.innerHTML = rule;
+        document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function toggleDarkMode() {
+        // todo: toggle dark mode
+        // todo: save setting in localstorage
+        if (localStorage.getItem('darkmode') !== 'on') {
+            document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.76';
+            createClass('a, span, body, h1 {color: rgba(255, 255, 255, 0.78)!important;}');
+            const readerarticle = document.getElementById('readerarticle');
+            readerarticle.style.backgroundColor = 'rgb(174, 174, 177, 0.20)';
+            readerarticle.style.boxShadow = '0px 6px 12px 3px rgba(0, 0, 0, 0.24)';
+            localStorage.setItem('darkmode', 'on')
+        } else {
+            localStorage.setItem('darkmode', 'off')
+        }
     }
 
     function replaceContent(content, site) {
@@ -168,13 +191,18 @@
             container = document.createElement('div'),
             article = document.createElement('div')
         ;
-        // article.appendChild(createCloser());
+        article.appendChild(createCmdButton());
         article.appendChild(content);
+        article.id = 'readerarticle';
         container.appendChild(article);
         article.setAttribute('style', getArticleStyle(site));
-        // saved_body = document.body.innerHTML;
         document.body.innerHTML = container.innerHTML;
         document.body.setAttribute('style', styles.body);
+        document.body.addEventListener('click', function (ev) {
+            if (ev.target.id === 'cmdbutton') {
+                toggleDarkMode();
+            }
+        });
     }
 
     function replaceBodyByText(site) {
@@ -202,16 +230,14 @@
     /*
      * Start here
      */
-    const sel = getSelection(),
-        text = sel.toString();
+    const site = getSite(location.host);
 
-    // if (text.length) {
-    //     replaceBodyBySelection(sel);
-    // } else
-    //     {
-        const site = getSite(location.host);
-        if (site) {
-            replaceBodyByText(site);
+    if (site) {
+        replaceBodyByText(site);
+        // console.log(localStorage.getItem('darkmode'));
+        if (localStorage.getItem('darkmode') === 'on') {
+            localStorage.setItem('darkmode', 'off')
+            toggleDarkMode();
         }
-    // }
+    }
 }());
