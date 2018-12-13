@@ -1,56 +1,96 @@
+'use strict';
+
 /*
  * Author: jan
  * Date: 6-dec-2018
  * http://jslint.com
- *
- * Weer eens een poging om een artikel op een (kranten)website leesbaar te presenteren.
- * Met een schuin oog naar Reader View van Safari.
- * Chrome kan advertenties beter blokkeren dan Safari.
- * Misschien is deze reader nog mooier dan die van Safari.
- * Hij past zich aan aan de host.
- * NB dit is een eenvoudiger en snellere oplossing dan mijn reader.text met zijn drukke back-end
- * activiteiten.
- * Er is ook nog een knopje bijgekomen om dark mode aan of uit te zetten.
  */
-'use strict';
 
 (function(){
 
-    const styles = {
-        article: 'box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 12px 3px;; ' +
-        'padding: 30px 60px; ' +
-        'min-height: 100%; ' +
-        'margin: 22px auto 0 auto; ' +
-        'max-width: 94ex;' +
-        'background-color:rgba(250,250,240,0.99);',
-        article2:'box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 12px 3px;; ' +
-        'padding: 30px 60px; ' +
-        'margin: 22px auto 0 auto; ' +
-        'max-width: 800px;' +
-        'background-color:rgba(250,250,240,0.99);',
-        body: 'height: calc(100% - 44px); font-family: Georgia;',
-        cmdbutton:
-            'display: inline-block;' +
-            'cursor: pointer; ' +
-            'padding: 2px 8px; ' +
-            'border-radius: 6px;' +
-            'z-index: 1; ' +
-            'font-weight: bold;',
-        darktheme: [
-            'a, p, span, body, h1, h2, i, div, time {color: rgba(255, 255, 255, 0.78) !important; }',
-            'body {background-color: rgba(0, 0, 0, 0.76); }',
-            '#readerarticle { ' +
-            'background-color: rgb(174, 174, 177, 0.20) !important;' +
-            'box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.24); ' +
-            '}' +
-            '#cmdbutton:hover {background-color: #666; }' +
-            'color: #fff; '
-        ],
-        defaulttheme: [
-            '#readerarticle img, #readerarticle figure {margin: 0 -60px; width: calc(100% + 120px); }' +
-            '#cmdbutton:hover {background-color: #cfcfcf; }' +
-            '#cmdcontainer{width: 100%; text-align: right}'
-        ]
+    const themes = {
+        defaulttheme:
+    `
+#cmdbutton {
+    display: inline-block;
+    cursor: pointer; 
+    padding: 2px 8px; 
+    border-radius: 6px;
+    z-index: 1; 
+    font-weight: bold;
+}
+#cmdbutton:hover {
+    background-color: #cfcfcf; 
+}
+#cmdcontainer{
+    width: 100%; 
+    text-align: right;
+}
+blockquote {
+    font-style: italic;
+}
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: transparent;
+    height: calc(100% - 44px); 
+    font-family: Georgia; 
+    --body-font-color: rgba(255, 255, 255, 0.78);
+    --horizontal-line-color: rgb(111, 111, 111);
+}
+body:after {
+    content: "";
+    height: 22px;
+    display: block;
+}
+#readerarticle {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 6px 12px 3px; 
+    padding: 30px 60px; 
+    min-height: 100%; 
+    margin: 22px auto 0 auto; 
+    max-width: 660px;
+    background-color:rgba(250,250,240,0.99);
+}
+`
+        , darktheme:
+    `
+#cmdbutton:hover {
+    background-color: #666; 
+}
+#readerarticle a { 
+    color: rgb(90, 200, 250) !important; 
+    text-decoration: none; 
+    border-bottom: none !important;
+}
+#readerarticle p, span, body, 
+#readerarticle h1, h2, i, 
+#readerarticle div, time, figcaption, footer, blockquote {
+    color: rgba(255, 255, 255, 0.780392); 
+}
+body {
+    background-color: rgba(0, 0, 0, 0.76); 
+}
+#readerarticle { 
+    background-color: rgb(174, 174, 177, 0.20) !important;
+    box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.24); 
+}
+`
+        , theguardian:
+    `
+#readerarticle {
+    max-width: 440px !important;
+}
+`
+        , stackoverflow: `
+#readerarticle {
+    max-width: 780px !important;
+    min-height: initial !important;
+}
+blockquote, code {
+    background-color: inherit;
+}
+`
     };
 
     const sites = [
@@ -67,8 +107,9 @@
             host: 'www.theguardian.com',
             selector: [
                 '.content__headline-standfirst-wrapper',
-                ['.content__article-body', 'font-size: 20px; line-height: 28px;']
-            ]
+                ['.content__article-body', 'font-size: 14px; line-height: 20px;']
+            ],
+            style: 'theguardian'
         },
         {
             host: 'www.nytimes.com',
@@ -107,7 +148,7 @@
                 '#question-header',
                 ['#mainbar', 'width: 100%']
             ],
-            article_style: 'article2'
+            style: 'stackoverflow'
         },
         {
             host: 'www.washingtonpost.com',
@@ -131,10 +172,9 @@
             ]
         }
     ];
-    var saved_body = null;
 
     function getSite(host) {
-        for (var i = 0; i < sites.length; i++) {
+        for (let i = 0; i < sites.length; i++) {
             if (sites[i].host === host) {
                 return sites[i];
             }
@@ -143,10 +183,10 @@
     }
 
     function getNodes(site) {
-        var nodes = [];
-        for (var i = 0; i < site.selector.length; i++) {
-            var selector = site.selector[i];
-            var style = null;
+        const nodes = [];
+        for (let i = 0; i < site.selector.length; i++) {
+            let selector = site.selector[i];
+            let style = null;
             // sommige sites, bijv. Trouw, hebben een specifieke style bij een selector
             if (Array.isArray(selector)) {
                 if (selector.length === 2) {
@@ -169,19 +209,11 @@
         return nodes;
     }
 
-    function getArticleStyle(site) {
-        if (site && site.article_style) {
-            return styles[site.article_style];
-        }
-        return styles.article;
-    }
-
     function createCmdButton() {
         const
             cmdcontainer = document.createElement('div'),
             cmdbutton = document.createElement('div');
         cmdbutton.id = 'cmdbutton';
-        cmdbutton.setAttribute('style', styles.cmdbutton);
         cmdbutton.innerHTML = 'o';
         cmdbutton.setAttribute('title', 'Toggle dark mode');
         cmdcontainer.id = 'cmdcontainer';
@@ -190,9 +222,9 @@
     }
 
     function createStylesheet(rules, id){
-        var style = document.createElement('style');
+        const style = document.createElement('style');
         style.type = 'text/css';
-        style.innerHTML = rules.join('\n');
+        style.innerHTML = rules;
         style.id = id;
         document.getElementsByTagName('head')[0].appendChild(style);
     }
@@ -206,7 +238,7 @@
 
     function toggleDarkMode() {
         if (localStorage.getItem('darkmode') !== 'on') {
-            createStylesheet(styles.darktheme, 'dark');
+            createStylesheet(themes.darktheme, 'dark');
             localStorage.setItem('darkmode', 'on')
         } else {
             localStorage.setItem('darkmode', 'off');
@@ -223,11 +255,12 @@
         article.appendChild(content);
         article.id = 'readerarticle';
         container.appendChild(article);
-        article.setAttribute('style', getArticleStyle(site));
+        if (site && site.style) {
+            createStylesheet(themes[site.style], site.style);
+        }
         document.body.innerHTML = container.innerHTML;
-        document.body.setAttribute('style', styles.body);
         document.body.addEventListener('click', function (ev) {
-            if (ev.target.id === 'cmdbutton') {
+            if (ev.target['id'] === 'cmdbutton') {
                 toggleDarkMode();
             }
         });
@@ -239,7 +272,7 @@
             nodes = getNodes(site)
         ;
         if (nodes.length > 0) {
-            for (var i = 0; i < nodes.length; i++) {
+            for (let i = 0; i < nodes.length; i++) {
                 content.appendChild(nodes[i]);
             }
             replaceContent(content, site);
@@ -255,9 +288,9 @@
 
     if (site) {
         replaceBodyByText(site);
-        createStylesheet(styles.defaulttheme, 'default');
+        createStylesheet(themes.defaulttheme, 'default');
         if (localStorage.getItem('darkmode') === 'on') {
-            localStorage.setItem('darkmode', 'off')
+            localStorage.setItem('darkmode', 'off');
             toggleDarkMode();
         }
     }
