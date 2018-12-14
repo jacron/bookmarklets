@@ -5,16 +5,7 @@
  * @file
  * Holds data for bookmarklets.
  */
-function scriptLoad($f, $url) {
-    return
-        "
-        f = '$f';
-        d = document;
-        s = d.createElement('script');
-        s.src='$url' + f;
-        d.body.appendChild(s);
-      ";
-}
+
 $tiles = array(
     // Read.text
     array(
@@ -22,7 +13,7 @@ $tiles = array(
         'subtitle' => 'Tekst netjes lezen',
         'body' => "",
         'file' => 'readtext3.js',
-        'script' => scriptLoad('readtext3.js?v=2.0', 'http://bookmarklets/scripts/'),
+        'scriptFile' => 'readtext3.js?v=2.0',
         'link' => 'read4',
         'icon' => '',
     ),
@@ -39,7 +30,6 @@ $tiles = array(
         }
         document.location.href = d + 'externalreviews';
       }",
-
     'link' => 'xr',
     'icon' => 'imdb',
   ),

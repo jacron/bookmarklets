@@ -16,6 +16,8 @@ class Bookmarklet {
     private $subtitle;
     private $body;
     private $script;
+    private $scriptFile;
+    private $scriptUrl;
     private $file;
     private $link;
     private $icon;
@@ -31,6 +33,12 @@ class Bookmarklet {
         $this->body = $data['body'];
 
         // optional fields
+        if (isset($data['scriptFile'])) {
+            $this->scriptFile = $data['scriptFile'];
+        }
+        if (isset($data['scriptUrl'])) {
+            $this->scriptUrl = $data['scriptUrl'];
+        }
         if (isset($data['script'])) {
             $this->script = $data['script'];
         }
@@ -111,8 +119,38 @@ class Bookmarklet {
         return $s;
     }
 
-    public function makeTile() {
+    public function getContent() {
         global $settings;
+        if (is_array($this->file)) {
+            $content = '';
+            foreach ($this->file as $file) {
+                $content .= file_get_contents($settings['scriptpath'] . $file);
+            }
+            $this->file = null;
+        } else {
+            $content = file_get_contents($settings['scriptpath'] . $this->file);
+        }
+        return $content;
+    }
+
+
+    public function getScript() {
+        global $settings;
+        $url = $settings['scripturl'];
+        if (!empty($this->scriptUrl)) {
+            $url = $this->scriptUrl;
+        }
+        $f = $this->scriptFile;
+        return
+            "
+        d = document;
+        s = d.createElement('script');
+        s.src='$url$f';
+        d.body.appendChild(s);
+      ";
+    }
+
+    public function makeTile() {
         $template = <<<EOT
 <div class="aux-content-widget">
     <div class="tile-header">
@@ -134,20 +172,14 @@ class Bookmarklet {
 </div>
 EOT;
         $script_href = '';
-        if (!empty($this->script)) {
+        if (!empty($this->scriptFile)) {
+            $script = $this->minify($this->getScript());
+            $script_href = '(function(){' . $script . '})()';
+        } else if (!empty($this->script)) {
             $script = $this->minify($this->script);
             $script_href = '(function(){' . $script . '})()';
         } else if (!empty($this->file)) {
-            if (is_array($this->file)) {
-                $content = '';
-                foreach ($this->file as $file) {
-                    $content .= file_get_contents($settings['scriptpath'] . $file);
-                }
-                $this->file = null;
-            } else {
-                $content = file_get_contents($settings['scriptpath'] . $this->file);
-            }
-            $script_href = $this->minify($content);
+            $script_href = $this->minify($this->getContent());
         }
         $placeholders = ['@icon', '@title', '@subtitle', '@body',
             '@script_href', '@script_text', '@file'];

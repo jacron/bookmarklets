@@ -20,7 +20,8 @@ if (isset($_REQUEST['special']) && $_REQUEST['special'] == 'own') {
 
 $title = 'BookmarkletsArranger';
 $settings = array(
-    'scriptpath' => 'scripts/'
+    'scriptpath' => 'scripts/',
+    'scripturl' => 'https://bookmarklets/scripts/'
 );
 if (isset($_REQUEST['script'])) {
     print '<pre>' .
