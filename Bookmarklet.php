@@ -115,16 +115,22 @@ class Bookmarklet {
         global $settings;
         $template = <<<EOT
 <div class="aux-content-widget">
-    <div class="icon @icon"></div>
-    <h1>@title</h1>
-    <h2>@subtitle</h2>
-    <div class="description">@body</div>
-    <hr>
-    <div class="script-link">
-        <a href="javascript:@script_href">@script_text</a>
-        <div class="script-body">@script_href</div>        
+    <div class="tile-header">
+        <div class="icon @icon"></div>
+        <h1>@title</h1>
+        <h2>@subtitle</h2>
+        <div class="description">@body</div>
     </div>
-    <a href="?script=@file">@file</a>
+    <hr>
+    <div class="link-container">
+        <div class="script-link">
+            <a href="javascript:@script_href">@script_text</a>
+            <div class="script-body" title="drag me to bookmark bar">@script_href</div>        
+        </div>
+        <div class="script-file">
+            <a href="?script=@file">@file</a>
+        </div>        
+    </div>
 </div>
 EOT;
         $script_href = '';
@@ -132,8 +138,16 @@ EOT;
             $script = $this->minify($this->script);
             $script_href = '(function(){' . $script . '})()';
         } else if (!empty($this->file)) {
-            $file = file_get_contents($settings['scriptpath'] . $this->file);
-            $script_href = $this->minify($file);
+            if (is_array($this->file)) {
+                $content = '';
+                foreach ($this->file as $file) {
+                    $content .= file_get_contents($settings['scriptpath'] . $file);
+                }
+                $this->file = null;
+            } else {
+                $content = file_get_contents($settings['scriptpath'] . $this->file);
+            }
+            $script_href = $this->minify($content);
         }
         $placeholders = ['@icon', '@title', '@subtitle', '@body',
             '@script_href', '@script_text', '@file'];

@@ -89,7 +89,7 @@ td{
     width: auto;
 }
 .description {
-  height: 30px;
+  max-height: 30px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -179,8 +179,30 @@ td{
     font-family: Consolas, "courier new";
     margin-top: -120px;
     overflow-y: auto;
-    height: 90px;
+    height: 80px;
 }
 .script-link:hover .script-body {
     display: block;
+}
+.script-link {
+    padding: 5px;
+    border: 1px solid #aae;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    width: fit-content;
+    float: left;
+}
+.script-link a {
+    text-decoration: none;
+}
+.script-file {
+    float: right;
+}
+.link-container {
+    padding: 8px;
+}
+.tile-header {
+    height: 94px;
+    overflow-y: auto;
 }
