@@ -67,6 +67,39 @@ class Bookmarklet {
         return $content;
     }
 
+    public function getScriptsAsync($files, $url) {
+        $script = "
+function loadScript(url, callback) {
+    d = document;
+    const s = d.createElement('script');
+    s.type = 'text/javascript';
+    s.src = url;
+    s.onreadystatechange = callback;
+    s.onload = callback;
+    d.head.appendChild(s);
+}
+        ";
+        for ($i = 0; $i < count($files) - 1; $i++) {
+            $next = 'next' . ($i);
+            $next2 = 'next' . ($i + 1);
+            if ($i == count($files) - 2) {
+                $next2 = 'null';
+            }
+            $nextfile = $files[$i + 1];
+            $script .= "
+function $next() {
+    loadScript('$url$nextfile', $next2);
+}
+            ";
+        }
+        $f = $files[0];
+        $script .= "
+loadScript('$url$f', next0);
+        ";
+        // debug print
+//        echo '<pre>' . $script . '</pre>';
+        return $script;
+    }
 
     public function getScript() {
         global $settings;
@@ -75,10 +108,13 @@ class Bookmarklet {
             $url = $this->scriptUrl;
         }
         $f = $this->scriptFile;
+        if (is_array($f)) {
+            return $this->getScriptsAsync($f, $url);
+        }
         return
             "
-        d = document;
-        s = d.createElement('script');
+        d=document;
+        s=d.createElement('script');
         s.src='$url$f';
         d.body.appendChild(s);
       ";
@@ -117,6 +153,10 @@ EOT;
         }
         $placeholders = ['@icon', '@title', '@subtitle', '@body',
             '@script_href', '@script_text', '@file'];
+        $f = $this->file;
+        if (is_array($f)) {
+            $f = null;
+        }
         $data = [
             $this->icon,
             $this->title,
@@ -124,7 +164,7 @@ EOT;
             $this->body,
             $script_href,
             $this->link,
-            $this->file
+            $f
         ];
         $html = str_replace($placeholders, $data, $template);
         return $html;

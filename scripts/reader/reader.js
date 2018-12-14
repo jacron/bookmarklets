@@ -2,9 +2,12 @@
  * Author: jan
  * Date: 6-dec-2018
  * http://jslint.com
+ *
+ * this file is dependent on reader.sites.js and reader.themes.js
+ * these have to be loaded before this one, async or not
  */
 
-const scriptpath = 'https://bookmarklets/scripts/reader/';
+// const scriptpath = 'https://bookmarklets/scripts/reader/';
 
 function getSite(host) {
     const sites = getSites();
@@ -121,19 +124,6 @@ function replaceBodyByText(site) {
     }
 }
 
-function loadScript(url, callback) {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = url;
-
-    // There are several events for cross browser compatibility.
-    script.onreadystatechange = callback;
-    script.onload = callback;
-
-    // Fire the loading
-    document.head.appendChild(script);
-}
-
 function run() {
     const site = getSite(location.host);
     console.log(site);
@@ -155,10 +145,4 @@ function run() {
     }
 }
 
-function run1() {
-    loadScript(scriptpath + 'reader.themes.js', run);
-}
-/*
- * Start here
- */
-loadScript(scriptpath + 'reader.sites.js', run1);
+run();
