@@ -11,6 +11,7 @@
  */
 
 include 'View.php'; // Class rendering the tiles
+include 'Minify.php';
 include 'Bookmarklet.php';  // Class for properties and rendering a bookmarklet tile
 if (isset($_REQUEST['special']) && $_REQUEST['special'] == 'own') {
     include 'Data.private.module';
