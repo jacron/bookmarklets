@@ -91,6 +91,10 @@ body {
 #readerarticle.dark aside * {
     color: #333;
 }
+div.content__article-body {
+    font-size: 16px !important;
+    line-height: 24px !important;
+}
 `
     , stackoverflow: `
 #readerarticle {
@@ -130,6 +134,9 @@ body {
 }
 #readerarticle {
     max-width: 820px;
+}
+.article__free-html-container {
+    display: none;
 }
 
 `

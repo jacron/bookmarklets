@@ -67,8 +67,8 @@ class Bookmarklet {
         return $content;
     }
 
-    public function getScriptsAsync($files, $url) {
-        $script = "
+    private function getLoadScript() {
+        return "
 function loadScript(url, callback) {
     d = document;
     const s = d.createElement('script');
@@ -78,24 +78,33 @@ function loadScript(url, callback) {
     s.onload = callback;
     d.head.appendChild(s);
 }
-        ";
-        for ($i = 0; $i < count($files) - 1; $i++) {
-            $next = 'next' . ($i);
-            $next2 = 'next' . ($i + 1);
-            if ($i == count($files) - 2) {
-                $next2 = 'null';
-            }
-            $nextfile = $files[$i + 1];
-            $script .= "
+";
+    }
+
+    private function getLoadNext($i, $files, $n, $url) {
+        $next = 'next' . $i;
+        $next2 = 'next' . ($i + 1);
+        if ($i == $n - 2) {
+            $next2 = 'null';
+        }
+        $nextfile = $files[$i + 1];
+        return "
 function $next() {
     loadScript('$url$nextfile', $next2);
 }
-            ";
+";
+    }
+
+    public function getScriptsAsync($files, $url) {
+        $script = $this->getLoadScript();
+        $n = count($files);
+        for ($i = 0; $i < $n - 1; $i++) {
+            $script .= $this->getLoadNext($i, $files, $n, $url);
         }
         $f = $files[0];
         $script .= "
 loadScript('$url$f', next0);
-        ";
+";
         // debug print
 //        echo '<pre>' . $script . '</pre>';
         return $script;
