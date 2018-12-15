@@ -144,6 +144,10 @@ loadScript('$url$f', next0);
             <a href="javascript:@script_href">@script_text</a>
             <div class="script-body" title="drag me to bookmark bar">@script_href</div>        
         </div>
+        <div class="script-link">
+            <a href="javascript:@inline_href">@inline_text</a>
+            <div class="script-body" title="drag me to bookmark bar">@inline_href</div>        
+        </div>
         <div class="script-file">
             <a href="?script=@file">@file</a>
         </div>        
@@ -151,17 +155,22 @@ loadScript('$url$f', next0);
 </div>
 EOT;
         $script_href = '';
+        $inline_href = '';
+        $inline_text = '';
         if (!empty($this->scriptFile)) {
             $script = Minify::process($this->getScript());
             $script_href = '(function(){' . $script . '})()';
         } else if (!empty($this->script)) {
             $script = Minify::process($this->script);
             $script_href = '(function(){' . $script . '})()';
-        } else if (!empty($this->file)) {
-            $script_href = Minify::process($this->getContent());
+        }
+        if (!empty($this->file)) {
+            $inline_href = Minify::process($this->getContent());
+            $inline_text = $this->link . '(i)';
         }
         $placeholders = ['@icon', '@title', '@subtitle', '@body',
-            '@script_href', '@script_text', '@file'];
+            '@script_href', '@script_text', '@file',
+            '@inline_href', '@inline_text'];
         $f = $this->file;
         if (is_array($f)) {
             $f = null;
@@ -173,7 +182,9 @@ EOT;
             $this->body,
             $script_href,
             $this->link,
-            $f
+            $f,
+            $inline_href,
+            $inline_text,
         ];
         $html = str_replace($placeholders, $data, $template);
         return $html;
