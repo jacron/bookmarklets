@@ -1,0 +1,116 @@
+<?php
+
+// $Id$
+
+/*
+ * Holds data for bookmarklets.
+ */
+$tiles = array(
+    // 'script' of 'scriptFile' krijgt voorrang
+    // als er geen 'script' is wordt 'file' gebruikt
+    // 'file' wordt in elk geval gebruikt in de tiles om het bestand snel in te kunnen zien
+
+    // Reader view
+    // emulate the Safari tool on chrome
+    // with minimal hassle
+    // (as opposed to the bulky extension Just Read)
+    array(
+        'title' => 'Reader View',
+        'subtitle' => 'Safari\'s Reader View on Chrome',
+        'body' => "Includes a switch for dark mode",
+        'scriptFile' => [
+            'reader/reader.themes.js',
+            'reader/reader.sites.js',
+            'reader/reader.js'],
+        'link' => 'reader',
+        'file' => [
+            'reader/reader.themes.js',
+            'reader/reader.sites.js',
+            'reader/reader.js'],
+        'icon' => 'image'
+    ),
+    // Open images on an index page (3)
+    array(
+        'title' => 'Image Opener (3)',
+        'subtitle' => 'Load hyperlinked images',
+        'body' => "I wrote this to have a quick view on pictures that are collected on 'Index of' pages.",
+        'scriptFile' => 'opener3.js',
+        'link' => 'open',
+        'file' => 'opener3.js',
+        'icon' => 'image'
+    ),
+    // IMDb store new film (3)
+    array(
+        'title' => 'IMDb3',
+        'subtitle' => 'Nieuwe film in catalogus',
+        'body' => "When in a IMDb title page, add the movie to my catalogue.",
+        'file' => 'newfilm3.js',
+        'link' => 'newfilm3',
+        'icon' => 'nmovies',
+    ),
+    // Read.text
+    array(
+        'title' => 'Read text v.2',
+        'subtitle' => 'Tekst netjes lezen',
+        'body' => "",
+//        'file' => 'readtext3.js',
+        'scriptFile' => 'readtext3.js?v=2.0',
+        'link' => 'read4',
+        'icon' => '',
+    ),
+    // Flickr Hack
+    array(
+      'title' => 'Flickr',
+      'subtitle' => 'Download photo',
+      'body' => "Save (protected) photo.",
+      'scriptFile' => 'flickr2014.js',
+      'link' => 'Get fl14',
+      'file' => 'flickr2014.js',
+      'icon' => 'flickr',
+    ),
+    // Various choices for imdb titel
+    array(
+        'title' => 'IMDb Keuzemenu 3',
+        'subtitle' => 'Combinatie nieuwe film / keuzemenu / imdb link elders',
+        'body' => "",
+        'scriptFile' => 'choice3.js',
+        'scriptUrl' => 'http://dev.movies13:82/js/',
+        'link' => 'FilmSide',
+        'icon' => 'imdb'
+    ),
+    // Google Bookmarks popup
+    array(
+        'title' => 'Google',
+        'subtitle' => 'Bookmark',
+        'body' => 'Open a dialog to save the current webpage as your Google bookmark. Choose your tags',
+        'file' => 'google_bm.js',
+        'link' => 'bm',
+        'icon' => 'google',
+    ),
+    // dev.jcroonen.nl.2013 in iPhone portrait size
+    /* 320 x 548, W+17 -> 337 (scrollbar) */
+    array(
+        'title' => 'dev.jcroonen.nl',
+        'subtitle' => 'in iPhone portrait',
+        'body' => 'Note: this also works directly as a hyperlink.',
+        'script' => "
+      url = 'http://dev.jcroonen.nl.2013';
+      specs = 'width=337,height=548,resizable=0,scrollbars=yes';
+      window.open(url, 'w', specs);",
+        'link' => 'iphone-p-jc',
+        'icon' => 'jcroonen'
+    ),
+    // NOS Teletekst in a popup
+    array(
+        'title' => 'Teletekst',
+        'subtitle' => 'NOS Teletekst in popup',
+        'body' => 'Note: this also works directly as a hyperlink.',
+        'script' => "
+      specs = 'width=740,height=540,resizable=0';
+      url = 'http://nos.nl/teletekst/#101_01';
+      window.open(url, 'w', specs);",
+        'link' => 'tt',
+        'icon' => 'nos'
+    ),
+);
+

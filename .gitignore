@@ -163,4 +163,4 @@ pip-log.txt
 .DS_Store
 /nbproject
 
-/Data.private.module
+# /Data.private.module
