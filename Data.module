@@ -9,12 +9,12 @@
 $tiles = array(
     // Read.text
     array(
-        'title' => 'Read text v.2',
+        'title' => 'Read text v.3',
         'subtitle' => 'Tekst netjes lezen',
         'body' => "",
-        'file' => 'readtext3.js',
+//        'file' => 'readtext3.js',
         'scriptFile' => 'readtext3.js?v=2.0',
-        'link' => 'read4',
+        'link' => 'read3',
         'icon' => '',
     ),
   // IMDb External Reviews

@@ -50,7 +50,7 @@ $tiles = array(
     ),
     // Read.text
     array(
-        'title' => 'Read text v.2',
+        'title' => 'Read text v.3',
         'subtitle' => 'Tekst netjes lezen',
         'body' => "",
 //        'file' => 'readtext3.js',

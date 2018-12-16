@@ -53,6 +53,23 @@ h3{
     height: 146px;
     float: left;
 }
+/* iPad landscape */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+    .aux-content-widget {
+        width: 260px;
+        height: 160px;
+    }
+    .tile-header {
+        height: 106px;
+    }
+
+}
+/* iPad portrait */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+    .aux-content-widget {
+        width: 260px
+    }
+}
 #bm-info{
     display:none;
     position: absolute;
