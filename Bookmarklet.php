@@ -106,7 +106,7 @@ function $next() {
 loadScript('$url$f', next0);
 ";
         // debug print
-//        echo '<pre>' . $script . '</pre>';
+        // echo '<pre>' . $script . '</pre>';
         return $script;
     }
 
@@ -130,7 +130,7 @@ loadScript('$url$f', next0);
     }
 
     public function makeTile() {
-        $template = <<<EOT
+        $template_skeleton = <<<EOT
 <div class="aux-content-widget">
     <div class="tile-header">
         <div class="icon @icon"></div>
@@ -140,51 +140,58 @@ loadScript('$url$f', next0);
     </div>
     <hr>
     <div class="link-container">
-        <div class="script-link">
-            <a href="javascript:@script_href">@script_text</a>
-            <div class="script-body" title="drag me to bookmark bar">@script_href</div>        
-        </div>
-        <div class="script-link">
-            <a href="javascript:@inline_href">@inline_text</a>
-            <div class="script-body" title="drag me to bookmark bar">@inline_href</div>        
-        </div>
+    @@script_text_div
+    @@inline_text_div
         <div class="script-file">
             <a href="?script=@file">@file</a>
         </div>        
     </div>
 </div>
 EOT;
-        $script_href = '';
-        $inline_href = '';
-        $inline_text = '';
+        $script_div = <<<EOT
+        <div class="script-link">
+            <a href="javascript:@script_href">@script_text</a>
+            <div class="script-body" title="drag me to bookmark bar">@script_href</div>        
+        </div>
+EOT;
+        $template = $template_skeleton;
+        $template_script = '';
+        $template_inline = '';
         if (!empty($this->scriptFile)) {
+            $template_script = $script_div;
             $script = Minify::process($this->getScript());
             $script_href = '(function(){' . $script . '})()';
+            $template_script = str_replace(
+                ['@script_text', '@script_href'],
+                [$this->link, $script_href], $template_script);
         } else if (!empty($this->script)) {
+            $template_script = $script_div;
             $script = Minify::process($this->script);
             $script_href = '(function(){' . $script . '})()';
+            $template_script = str_replace(
+                ['@script_text', '@script_href'],
+                [$this->link, $script_href], $template_script);
         }
         if (!empty($this->file)) {
+            $template_inline = $script_div;
             $inline_href = Minify::process($this->getContent());
             $inline_text = $this->link . '(i)';
+            $template_inline = str_replace(
+                ['@script_text', '@script_href'],
+                [$inline_text, $inline_href], $template_inline);
         }
-        $placeholders = ['@icon', '@title', '@subtitle', '@body',
-            '@script_href', '@script_text', '@file',
-            '@inline_href', '@inline_text'];
+        $placeholders = [
+            '@icon', '@title', '@subtitle', '@body',
+            '@@script_text_div', '@@inline_text_div',
+            '@file'];
         $f = $this->file;
         if (is_array($f)) {
             $f = null;
         }
         $data = [
-            $this->icon,
-            $this->title,
-            $this->subtitle,
-            $this->body,
-            $script_href,
-            $this->link,
+            $this->icon, $this->title, $this->subtitle, $this->body,
+            $template_script, $template_inline,
             $f,
-            $inline_href,
-            $inline_text,
         ];
         $html = str_replace($placeholders, $data, $template);
         return $html;
