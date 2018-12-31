@@ -193,10 +193,11 @@ td{
     padding: 8px;
     white-space: pre-wrap;
     position: absolute;
-    font-family: Consolas, "courier new";
-    margin-top: -120px;
+    font-family: Consolas, "courier new", serif;
+    margin-top: -110px;
     overflow-y: auto;
     height: 80px;
+    z-index: 1;
 }
 .script-link:hover .script-body {
     display: block;

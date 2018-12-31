@@ -58,9 +58,9 @@ body:after {
 #readerarticle h1, 
 #readerarticle h2, 
 #readerarticle i, 
-#readerarticle div, 
 #readerarticle time, 
 #readerarticle figcaption, 
+#readerarticle figcaption span,
 #readerarticle footer, 
 #readerarticle blockquote {
     color: rgba(255, 255, 255, 0.780392); 
@@ -106,11 +106,12 @@ div.content__article-body {
 .dark .owner,
 .dark #tabs a,
 .dark .post-tag,
+.dark textarea,
 .dark .s-btn__primary {
     background-color: inherit;
 }
-.dark code {
-    color: #333;
+.dark textarea {
+    color: #eee;
 }
 .dark span,
 .dark b {
@@ -123,14 +124,17 @@ div.content__article-body {
 .dark .question-status div {
     color: #333 !important;
 }
-
+.dark .comment-body {
+    color: #eee;
+}
 `
     , trouw: `
 .article__flex__right {
     margin: 0;
 }
 #readerarticle p {
-    font-size: 22px;
+    font-size: 24px;
+    font-family: Georgia; 
 }
 #readerarticle {
     max-width: 820px;
@@ -148,6 +152,20 @@ div.content__article-body {
 }
 #readerarticle p {
     font-size: 15px !important;
+}
+section[name=articleBody] div {
+    margin-left: 0;
+}
+figure div[data-testid] {
+    display: none;
+}
+@media (min-width: 1024px) {
+    .css-1ygdjhk {
+        margin-left: -15px;
+        margin-right: 0;
+        width: 500px;
+        max-width: initial;
+    }
 }
 `
 };

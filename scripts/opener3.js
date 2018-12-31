@@ -22,7 +22,7 @@
     function hasGraphExtension(s) {
         var p,
             ext,
-            exts = ['jpg','png', 'gif', 'jpeg'],
+            exts = ['jpg','png', 'gif', 'jpeg', 'bmp'],
             k;
 
         p = s.lastIndexOf('.');
