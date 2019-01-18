@@ -1,19 +1,26 @@
 const themes = {
     defaulttheme:
         `
-#cmdbutton {
+#cmdtoggle,
+#cmdclose {
     display: inline-block;
     cursor: pointer; 
     padding: 4px 10px; 
     border-radius: 6px;
     z-index: 1; 
     font-weight: bold;
-    margin: 0 -32px 0 0;
 }
-#cmdbutton:hover {
+#cmdtoggle {
+    margin: 0 -44px 0 0;
+}
+#cmdclose {
+    margin: 0 -64px 0 0;
+}
+#cmdtoggle:hover,
+#cmdclose:hover {
     background-color: #cfcfcf; 
 }
-#cmdcontainer{
+.cmdcontainer{
     width: 100%; 
     text-align: right;
 }
@@ -46,8 +53,13 @@ body:after {
 `
     , darktheme:
         `
-#cmdbutton:hover {
+#cmdtoggle:hover,
+#cmdclose:hover {
     background-color: #666; 
+}
+#cmdtoggle,
+#cmdclose {
+    color: #eff;
 }
 #readerarticle a { 
     color: rgb(90, 200, 250) !important; 
@@ -57,6 +69,7 @@ body:after {
 #readerarticle p, 
 #readerarticle h1, 
 #readerarticle h2, 
+#readerarticle h3, 
 #readerarticle i, 
 #readerarticle time, 
 #readerarticle figcaption, 
@@ -69,11 +82,14 @@ body {
     background-color: rgba(0, 0, 0, 0.76); 
 }
 #readerarticle { 
-    background-color: rgb(174, 174, 177, 0.20) !important;
+    background-color: rgba(174, 174, 177, 0.20) !important;
     box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.24); 
 }
 #readerarticle aside * {
     color: inherit;
+}
+.content-container {
+    background-color: #666;
 }
 `
     , theguardian:
@@ -144,6 +160,11 @@ div.content__article-body {
 }
 
 `
+    , volkskrant: `
+.artstyle__main--container {
+    margin-right: auto !important;
+}
+`
     , nytimes: `
 
 #readerarticle {
@@ -166,6 +187,26 @@ figure div[data-testid] {
         width: 500px;
         max-width: initial;
     }
+}
+`
+    , angulario: `
+
+#readerarticle p {
+    font-size: 18px !important;
+}
+.dark blockquote, 
+.dark code,
+.dark .owner,
+.dark #tabs a,
+.dark .post-tag,
+.dark textarea,
+.dark pre,
+.dark aio-code,
+.dark .s-btn__primary {
+    background-color: inherit;
+}
+.dark aio-code {
+  rgba(241,241,241,0.2) !important;
 }
 `
 };

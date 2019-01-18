@@ -34,10 +34,10 @@ h3{
 }
 .aux-content-widget {
     /*http://webdesignerwall.com/tutorials/cross-browser-css-gradient*/
-    background: #F2F2F1;
+    /*background: #F2F2F1;*/
 
     background: -webkit-gradient(linear, left top, left bottom, from(#E8E8E8), to(#F2F2F1));/*Chrome*/
-    background: -moz-linear-gradient(center bottom , #E8E8E8 0%, #F2F2F1 50%) repeat scroll 0 0 #F5F5F4;/*FF*/
+    /*background: -moz-linear-gradient(center bottom , #E8E8E8 0%, #F2F2F1 50%) repeat scroll 0 0 #F5F5F4;!*FF*!*/
     /*-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#E8E8E8', endColorstr='#F2F2F1')";/*IE nq */
 
     border: 1px solid #F6F6F5;
@@ -52,23 +52,6 @@ h3{
     width: 300px;
     height: 146px;
     float: left;
-}
-/* iPad landscape */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
-    .aux-content-widget {
-        width: 260px;
-        height: 160px;
-    }
-    .tile-header {
-        height: 106px;
-    }
-
-}
-/* iPad portrait */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
-    .aux-content-widget {
-        width: 260px
-    }
 }
 #bm-info{
     display:none;
@@ -223,4 +206,23 @@ td{
 .tile-header {
     height: 94px;
     overflow-y: auto;
+}
+
+/* iPad landscape */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+    .aux-content-widget {
+        width: 260px;
+        height: 160px;
+    }
+    .tile-header {
+        height: 106px;
+    }
+
+}
+
+/* iPad portrait */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+    .aux-content-widget {
+        width: 260px
+    }
 }

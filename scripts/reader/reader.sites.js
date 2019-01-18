@@ -50,6 +50,13 @@ const sites = [
         ]
     },
     {
+        host: 'www.volkskrant.nl',
+        selector: [
+            'article'
+        ],
+        style: 'volkskrant'
+    },
+    {
         host: 'stackoverflow.com',
         selector: [
             '#question-header',
@@ -70,6 +77,13 @@ const sites = [
             'h1[itemprop=headline]',
             'section.bodee'
         ]
+    },
+    {
+        host: 'angular.io',
+        selector: [
+            'aio-doc-viewer'
+        ],
+        style: 'angulario'
     }
 ];
 

@@ -10,33 +10,31 @@
 // const scriptpath = 'https://bookmarklets/scripts/reader/';
 
 function getSite(host) {
-    const sites = getSites();
-    for (let i = 0; i < sites.length; i++) {
-        if (sites[i].host === host) {
-            return sites[i];
+    return getSites().find(site => site.host === host);
+}
+
+function getSelector(selector) {
+    let style = null;
+    // sommige sites, bijv. Trouw, hebben een specifieke style bij een selector
+    if (Array.isArray(selector)) {
+        if (selector.length === 2) {
+            style = selector[1];
+            selector = selector[0];
+        } else {
+            console.log(selector, 'format error');
         }
     }
-    return null;
+    return {selector, style}
 }
 
 function getNodes(site) {
     const nodes = [];
     for (let i = 0; i < site.selector.length; i++) {
-        let selector = site.selector[i];
-        let style = null;
-        // sommige sites, bijv. Trouw, hebben een specifieke style bij een selector
-        if (Array.isArray(selector)) {
-            if (selector.length === 2) {
-                style = selector[1];
-                selector = selector[0];
-            } else {
-                console.log(selector, 'format error');
-            }
-        }
-        const node = document.querySelector(selector);
+        const selectorSet = getSelector(site.selector[i]);
+        const node = document.querySelector(selectorSet.selector);
         if (node) {
-            if (style) {
-                node.setAttribute('style', style);
+            if (selectorSet.style) {
+                node.setAttribute('style', selectorSet.style);
             }
             nodes.push(node);
         } else {
@@ -46,14 +44,14 @@ function getNodes(site) {
     return nodes;
 }
 
-function createCmdButton() {
+function createToggleButton() {
     const
         cmdcontainer = document.createElement('div'),
         cmdbutton = document.createElement('div');
-    cmdbutton.id = 'cmdbutton';
+    cmdbutton.id = 'cmdtoggle';
     cmdbutton.innerHTML = 'o';
     cmdbutton.setAttribute('title', 'Toggle dark mode');
-    cmdcontainer.id = 'cmdcontainer';
+    cmdcontainer.className = 'cmdcontainer';
     cmdcontainer.appendChild(cmdbutton);
     return cmdcontainer;
 }
@@ -66,7 +64,7 @@ function createStylesheet(rules, id){
         // so this style can be removed later
         style.id = id;
     }
-    document.getElementsByTagName('head')[0].appendChild(style);
+    return style;
 }
 
 function removeStylesheet(id) {
@@ -78,7 +76,8 @@ function removeStylesheet(id) {
 
 function toggleDarkMode() {
     if (localStorage.getItem('darkmode') !== 'on') {
-        createStylesheet(themes.darktheme, 'dark');
+        const style = createStylesheet(themes.darktheme, 'dark');
+        document.getElementsByTagName('head')[0].appendChild(style);
         localStorage.setItem('darkmode', 'on');
         // stylesheet will use the article class
         document.getElementById('readerarticle').className = 'dark';
@@ -89,59 +88,72 @@ function toggleDarkMode() {
     }
 }
 
-function createArticle(content) {
+function createContainer(nodes) {
+    const container = document.createElement('div');
+    container.className = 'content-container';
     const article = document.createElement('div');
-    article.appendChild(createCmdButton());
-    article.appendChild(content);
+    article.appendChild(createToggleButton());
     article.id = 'readerarticle';
-    return article;
+    for (let i = 0; i < nodes.length; i++) {
+        article.appendChild(nodes[i]);
+    }
+    container.appendChild(article);
+    return container;
 }
 
-function replaceContent(content) {
-    // container will replace body
-    const container = document.createElement('div');
-    container.appendChild(createArticle(content));
+function injectNodes(nodes) {
+    const container = createContainer(nodes);
     document.body.innerHTML = container.innerHTML;
+}
+
+function addEvents() {
     document.body.addEventListener('click', function (ev) {
-        if (ev.target['id'] === 'cmdbutton') {
+        if (ev.target['id'] === 'cmdtoggle') {
             toggleDarkMode();
         }
     });
 }
 
-function replaceBodyByText(site) {
-    const
-        content = document.createElement('div'),
-        nodes = getNodes(site)
-    ;
-    if (nodes.length > 0) {
-        for (let i = 0; i < nodes.length; i++) {
-            content.appendChild(nodes[i]);
+function injectStylesheets(site) {
+    const defaultStyle = createStylesheet(themes.defaulttheme, 'default');
+    let siteStyle = null;
+    let darkStyle = null;
+    if (localStorage.getItem('darkmode') === 'on') {
+        darkStyle = createStylesheet(themes.darktheme, 'dark');
+        // stylesheet will use the article class
+        document.getElementById('readerarticle').className = 'dark';
+    }
+    if (site.style) {
+        if (themes[site.style]) {
+            siteStyle = createStylesheet(themes[site.style]);
+        } else {
+            console.log('missing style: ' + site.style);
         }
-        replaceContent(content);
+    }
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(defaultStyle);
+    if (siteStyle) { fragment.appendChild(siteStyle); }
+    if (darkStyle) { fragment.appendChild(darkStyle); }
+    document.getElementsByTagName('head')[0].appendChild(fragment);
+}
+
+function injectArticle(site) {
+    const nodes = getNodes(site);
+    if (nodes.length > 0) {
+        injectNodes(nodes);
+        injectStylesheets(site);
+        addEvents();
     } else {
         console.log('No content for reader found');
     }
 }
 
 function run() {
+    console.log(location.host);
     const site = getSite(location.host);
-    console.log(site);
+    // console.log(site);
     if (site) {
-        replaceBodyByText(site);
-        createStylesheet(themes.defaulttheme, 'default');
-        if (localStorage.getItem('darkmode') === 'on') {
-            createStylesheet(themes.darktheme, 'dark');
-            // stylesheet will use the article class
-            document.getElementById('readerarticle').className = 'dark';
-        }
-        if (site.style) {
-            if (themes[site.style]) {
-                createStylesheet(themes[site.style]);
-            } else {
-                console.log('missing style: ' + site.style);
-            }
-        }
+        injectArticle(site);
     }
 }
 
