@@ -189,6 +189,12 @@ figure div[data-testid] {
     }
 }
 `
+    , washingtonpost: `
+#readerarticle p {
+    font-size: 22px !important;
+}
+    
+`
     , angulario: `
 
 #readerarticle p {

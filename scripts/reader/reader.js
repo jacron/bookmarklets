@@ -121,7 +121,6 @@ function injectStylesheets(site) {
     if (localStorage.getItem('darkmode') === 'on') {
         darkStyle = createStylesheet(themes.darktheme, 'dark');
         // stylesheet will use the article class
-        document.getElementById('readerarticle').className = 'dark';
     }
     if (site.style) {
         if (themes[site.style]) {
@@ -140,8 +139,10 @@ function injectStylesheets(site) {
 function injectArticle(site) {
     const nodes = getNodes(site);
     if (nodes.length > 0) {
-        injectNodes(nodes);
+        document.body.innerHTML = '';
         injectStylesheets(site);
+        injectNodes(nodes);
+        document.getElementById('readerarticle').className = 'dark';
         addEvents();
     } else {
         console.log('No content for reader found');

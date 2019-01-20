@@ -69,7 +69,8 @@ const sites = [
         selector: [
             '#top-content',
             '#article-body'
-        ]
+        ],
+        style: 'washingtonpost'
     },
     {
         host: 'www.macworld.com',
