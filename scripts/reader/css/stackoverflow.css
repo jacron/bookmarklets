@@ -2,6 +2,9 @@
     max-width: 780px;
     min-height: initial;
 }
+#mainbar {
+    width: 100%
+}
 .dark blockquote,
 .dark code,
 .dark .owner,

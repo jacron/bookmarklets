@@ -1,4 +1,5 @@
-.artstyle__main--container {
+.artstyle__main--container,
+.artstyle__header {
     margin-right: auto !important;
 }
 body.dark,
@@ -18,5 +19,8 @@ body.dark,
 .dark .teaser__header,
 .dark .teaser__title--small
 {
-    color: #eee !important;
+    /*color: #eee !important;*/
+}
+.dark header.app-header-home {
+    background-color: #666 !important;
 }

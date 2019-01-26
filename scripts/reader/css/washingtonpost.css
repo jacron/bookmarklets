@@ -1,3 +1,27 @@
 #readerarticle p {
     font-size: 22px !important;
 }
+body {
+    background-color: #e7e7e7;
+}
+body.dark {
+    color: #E8E8E8;
+    background-color: #666666;
+}
+#pb-root {
+    background-color: inherit;
+}
+.dark #pb-root {
+    background-color: #666666;
+}
+.dark .pb-f-homepage-card .panel,
+.skin.skin-card {
+    background-color: #888888;
+}
+.dark h1,
+.dark .blurb,
+.dark a,
+.dark .label,
+.dark .headline {
+    color: #E8E8E8;
+}

@@ -11,3 +11,7 @@
 .article__free-html-container {
     display: none;
 }
+.article__header__title {
+    font-size: 26px;
+    line-height: 36px;
+}

@@ -4,15 +4,15 @@ const sites = [
         selector: [
             '.topper__headline',
             '.topper__standfirst',
-            '.main-image',
+            ['figure.topper__visual', ".main-image"],
             '.article__content-body'
-        ]
+        ],
+        style: 'ft'
     },
     {
         host: 'www.theguardian.com',
         selector: [
-            '.content__headline-standfirst-wrapper',
-            ['.content__article-body', 'font-size: 14px; line-height: 20px;']
+            '.content__main-column',
         ],
         style: 'theguardian'
     },
@@ -27,14 +27,15 @@ const sites = [
     {
         host: 'fd.nl',
         selector: [
-            ['article h1', 'font-size: 40px;'],
-            ['main .body', 'font-size: 20px; line-height: 28px;']
-        ]
+            'article h1',
+            'main .body',
+        ],
+        style: 'fd'
     },
     {
         host: 'www.trouw.nl',
         selector: [
-            ['.article__header__title', 'font-size: 26px; line-height: 36px;'],
+            '.article__header__title',
             '.article__header__meta',
             'figure.article__cover',
             '.fjs-article__main'
@@ -46,6 +47,7 @@ const sites = [
         selector: [
             'article.artstyle'
         ],
+        main: true,
         style: 'volkskrant'
     },
     {
@@ -60,7 +62,7 @@ const sites = [
         host: 'stackoverflow.com',
         selector: [
             '#question-header',
-            ['#mainbar', 'width: 100%']
+            '#mainbar',
         ],
         style: 'stackoverflow'
     },
@@ -72,19 +74,26 @@ const sites = [
         ],
         style: 'washingtonpost'
     },
-    {
-        host: 'www.macworld.com',
-        selector: [
-            'h1[itemprop=headline]',
-            'section.bodee'
-        ]
-    },
+    // {
+    //     host: 'www.macworld.com',
+    //     selector: [
+    //         'h1[itemprop=headline]',
+    //         'section.bodee'
+    //     ]
+    // },
     {
         host: 'angular.io',
         selector: [
             'aio-doc-viewer'
         ],
         style: 'angulario'
+    },
+    {
+        host: 'www.reddit.com',
+        selector: [
+            '.gtq90r-3'
+        ],
+        style: 'reddit'
     }
 ];
 

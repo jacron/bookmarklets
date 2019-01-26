@@ -9,33 +9,36 @@
 
 const scriptpath = 'https://bookmarklets/scripts/reader/';
 
-function getSelector(selector) {
-    let style = null;
-    // sommige sites, bijv. Trouw, hebben een specifieke style bij een selector
-    if (Array.isArray(selector)) {
-        if (selector.length === 2) {
-            style = selector[1];
-            selector = selector[0];
-        } else {
-            console.log(selector, 'format error');
-        }
-    }
-    return {selector, style}
+function createHostsTable() {
+    const table = document.createElement('table');
+    getSites().forEach(site => {
+        const row = document.createElement('tr');
+        const data = document.createElement('td');
+        data.innerText = site.host;
+        row.appendChild(data);
+        table.appendChild(row);
+    });
+    return table;
 }
 
 function getNodes(site) {
     const nodes = [];
     for (let i = 0; i < site.selector.length; i++) {
-        const selectorSet = getSelector(site.selector[i]);
-        const node = document.querySelector(selectorSet.selector);
-        if (node) {
-            if (selectorSet.style) {
-                node.setAttribute('style', selectorSet.style);
+        const sel = site.selector[i];
+        let node;
+        if (Array.isArray(sel)) {
+            for (let j = 0; j < sel.length; j++) {
+                node = document.querySelector(sel[j]);
+                if (node) break;
             }
+        } else {
+            node = document.querySelector(sel);
+        }
+        if (node) {
             nodes.push(node);
         } else {
-            console.log(site.selector[i] + ' is not a node');
-            // return [];
+            console.log(sel + ' is not a node');
+            return [];
         }
     }
     return nodes;
@@ -91,16 +94,16 @@ function toggleArticleDarkMode() {
 
 function toggleBodyDarkMode() {
     const bodydarkmode = localStorage.getItem('bodydarkmode');
-    console.log(bodydarkmode);
+    // console.log(bodydarkmode);
     if (!bodydarkmode || bodydarkmode !== 'on') {
         const style = loadStylesheet('dark', 'bodydark');
         document.getElementsByTagName('head')[0].appendChild(style);
         localStorage.setItem('bodydarkmode', 'on');
-        // stylesheet will use the article class
         document.body.className = 'dark';
     } else {
         localStorage.setItem('bodydarkmode', 'off');
         removeStylesheet('bodydark');
+        console.log(document.body.className);
         document.body.className = '';
     }
 }
@@ -148,7 +151,7 @@ function injectStylesheets(site, element) {
     }
     if (element === 'body' && localStorage.getItem('bodydarkmode') === 'on') {
         document.body.className = 'dark';
-        darkStyle = loadStylesheet('dark', 'dark');
+        darkStyle = loadStylesheet('dark', 'bodydark');
     }
     if (site.style) {
         siteStyle = loadStylesheet(site.style, site.style);
@@ -179,21 +182,9 @@ function themeSite(site) {
     if (nodes.length > 0) {
         injectArticle(nodes, site);
     } else {
-        // console.log('No content for reader found');
+        console.log('No content for reader found');
         bodyDark(site);
     }
-}
-
-function createHostsTable() {
-    const table = document.createElement('table');
-    getSites().forEach(site => {
-        const row = document.createElement('tr');
-        const data = document.createElement('td');
-        data.innerText = site.host;
-        row.appendChild(data);
-        table.appendChild(row);
-    });
-    return table;
 }
 
 function run() {
@@ -204,8 +195,8 @@ function run() {
         themeSite(site);
     }
     // provisionary showing the list of hosts
-    const hostsTable = createHostsTable();
-    document.body.appendChild(hostsTable);
+    // const hostsTable = createHostsTable();
+    // document.body.appendChild(hostsTable);
 }
 
 run();
