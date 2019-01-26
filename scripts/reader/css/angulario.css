@@ -1,0 +1,17 @@
+#readerarticle p {
+    font-size: 18px !important;
+}
+.dark blockquote,
+.dark code,
+.dark .owner,
+.dark #tabs a,
+.dark .post-tag,
+.dark textarea,
+.dark pre,
+.dark aio-code,
+.dark .s-btn__primary {
+    background-color: inherit;
+}
+.dark aio-code {
+    rgba(241,241,241,0.2) !important;
+}

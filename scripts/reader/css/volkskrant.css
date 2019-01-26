@@ -1,0 +1,22 @@
+.artstyle__main--container {
+    margin-right: auto !important;
+}
+body.dark,
+.dark nav,
+.dark nav a,
+.dark article,
+.dark section,
+.dark .section__anchor,
+.dark .section__title,
+.dark .app-header-home__menu-balcony-text,
+.dark .wl-teaser--list,
+.dark .teaser-list__label {
+    background-color: #666 !important;
+    color: #eee !important;
+}
+.dark .teaser__title,
+.dark .teaser__header,
+.dark .teaser__title--small
+{
+    color: #eee !important;
+}

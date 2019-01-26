@@ -1,0 +1,30 @@
+#readerarticle {
+    max-width: 780px;
+    min-height: initial;
+}
+.dark blockquote,
+.dark code,
+.dark .owner,
+.dark #tabs a,
+.dark .post-tag,
+.dark textarea,
+.dark .s-btn__primary {
+    background-color: inherit;
+}
+.dark textarea {
+    color: #eee;
+}
+.dark span,
+.dark b {
+    color: inherit;
+}
+.dark .question-status,
+.dark .question-status b,
+.dark .question-status p,
+.dark .question-status span ,
+.dark .question-status div {
+    color: #333 !important;
+}
+.dark .comment-body {
+    color: #eee;
+}

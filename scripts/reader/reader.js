@@ -7,11 +7,7 @@
  * these have to be loaded before this one, async or not
  */
 
-// const scriptpath = 'https://bookmarklets/scripts/reader/';
-
-function getSite(host) {
-    return getSites().find(site => site.host === host);
-}
+const scriptpath = 'https://bookmarklets/scripts/reader/';
 
 function getSelector(selector) {
     let style = null;
@@ -39,6 +35,7 @@ function getNodes(site) {
             nodes.push(node);
         } else {
             console.log(site.selector[i] + ' is not a node');
+            // return [];
         }
     }
     return nodes;
@@ -56,15 +53,20 @@ function createToggleButton() {
     return cmdcontainer;
 }
 
-function createStylesheet(rules, id){
-    const style = document.createElement('style');
-    style.type = 'text/css';
-    style.innerHTML = rules;
-    if (id) {
-        // so this style can be removed later
-        style.id = id;
-    }
-    return style;
+function injectToggleButton() {
+    const button = createToggleButton();
+    button.className = 'standalone';
+    document.body.appendChild(button);
+}
+
+function loadStylesheet(name, id) {
+    const link = document.createElement( "link" );
+    link.href = `${scriptpath}css/${name}.css`;
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.media = "screen,print";
+    link.id = id;
+    return link;
 }
 
 function removeStylesheet(id) {
@@ -74,17 +76,32 @@ function removeStylesheet(id) {
     }
 }
 
-function toggleDarkMode() {
+function toggleArticleDarkMode() {
     if (localStorage.getItem('darkmode') !== 'on') {
-        const style = createStylesheet(themes.darktheme, 'dark');
+        const style = loadStylesheet('dark', 'dark');
         document.getElementsByTagName('head')[0].appendChild(style);
         localStorage.setItem('darkmode', 'on');
-        // stylesheet will use the article class
         document.getElementById('readerarticle').className = 'dark';
     } else {
         localStorage.setItem('darkmode', 'off');
         removeStylesheet('dark');
         document.getElementById('readerarticle').className = '';
+    }
+}
+
+function toggleBodyDarkMode() {
+    const bodydarkmode = localStorage.getItem('bodydarkmode');
+    console.log(bodydarkmode);
+    if (!bodydarkmode || bodydarkmode !== 'on') {
+        const style = loadStylesheet('dark', 'bodydark');
+        document.getElementsByTagName('head')[0].appendChild(style);
+        localStorage.setItem('bodydarkmode', 'on');
+        // stylesheet will use the article class
+        document.body.className = 'dark';
+    } else {
+        localStorage.setItem('bodydarkmode', 'off');
+        removeStylesheet('bodydark');
+        document.body.className = '';
     }
 }
 
@@ -106,28 +123,35 @@ function injectNodes(nodes) {
     document.body.innerHTML = container.innerHTML;
 }
 
-function addEvents() {
+function addEventToggleArticle() {
     document.body.addEventListener('click', function (ev) {
         if (ev.target['id'] === 'cmdtoggle') {
-            toggleDarkMode();
+            toggleArticleDarkMode();
         }
     });
 }
 
-function injectStylesheets(site) {
-    const defaultStyle = createStylesheet(themes.defaulttheme, 'default');
+function addEventToggleBody() {
+    document.body.addEventListener('click', function (ev) {
+        if (ev.target['id'] === 'cmdtoggle') {
+            toggleBodyDarkMode();
+        }
+    });
+}
+
+function injectStylesheets(site, element) {
+    const defaultStyle = loadStylesheet('default', 'default');
     let siteStyle = null;
     let darkStyle = null;
-    if (localStorage.getItem('darkmode') === 'on') {
-        darkStyle = createStylesheet(themes.darktheme, 'dark');
-        // stylesheet will use the article class
+    if (element === 'article' && localStorage.getItem('darkmode') === 'on') {
+        darkStyle = loadStylesheet('dark', 'dark');
+    }
+    if (element === 'body' && localStorage.getItem('bodydarkmode') === 'on') {
+        document.body.className = 'dark';
+        darkStyle = loadStylesheet('dark', 'dark');
     }
     if (site.style) {
-        if (themes[site.style]) {
-            siteStyle = createStylesheet(themes[site.style]);
-        } else {
-            console.log('missing style: ' + site.style);
-        }
+        siteStyle = loadStylesheet(site.style, site.style);
     }
     const fragment = document.createDocumentFragment();
     fragment.appendChild(defaultStyle);
@@ -136,17 +160,40 @@ function injectStylesheets(site) {
     document.getElementsByTagName('head')[0].appendChild(fragment);
 }
 
-function injectArticle(site) {
+function injectArticle(nodes, site) {
+    document.body.innerHTML = '';
+    injectStylesheets(site, 'article');
+    injectNodes(nodes);
+    document.getElementById('readerarticle').className = 'dark';
+    addEventToggleArticle();
+}
+
+function bodyDark(site) {
+    injectStylesheets(site, 'body');
+    injectToggleButton();
+    addEventToggleBody();
+}
+
+function themeSite(site) {
     const nodes = getNodes(site);
     if (nodes.length > 0) {
-        document.body.innerHTML = '';
-        injectStylesheets(site);
-        injectNodes(nodes);
-        document.getElementById('readerarticle').className = 'dark';
-        addEvents();
+        injectArticle(nodes, site);
     } else {
-        console.log('No content for reader found');
+        // console.log('No content for reader found');
+        bodyDark(site);
     }
+}
+
+function createHostsTable() {
+    const table = document.createElement('table');
+    getSites().forEach(site => {
+        const row = document.createElement('tr');
+        const data = document.createElement('td');
+        data.innerText = site.host;
+        row.appendChild(data);
+        table.appendChild(row);
+    });
+    return table;
 }
 
 function run() {
@@ -154,8 +201,11 @@ function run() {
     const site = getSite(location.host);
     // console.log(site);
     if (site) {
-        injectArticle(site);
+        themeSite(site);
     }
+    // provisionary showing the list of hosts
+    const hostsTable = createHostsTable();
+    document.body.appendChild(hostsTable);
 }
 
 run();

@@ -1,0 +1,13 @@
+.article__flex__right {
+    margin: 0;
+}
+#readerarticle p {
+    font-size: 24px;
+    font-family: Georgia;
+}
+#readerarticle {
+    max-width: 820px;
+}
+.article__free-html-container {
+    display: none;
+}

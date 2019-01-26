@@ -1,0 +1,21 @@
+#readerarticle {
+    max-width: 490px;
+    padding: 30px;
+}
+#readerarticle p {
+    font-size: 15px !important;
+}
+section[name=articleBody] div {
+    margin-left: 0;
+}
+figure div[data-testid] {
+    display: none;
+}
+@media (min-width: 1024px) {
+    .css-1ygdjhk {
+        margin-left: -15px;
+        margin-right: 0;
+        width: 500px;
+        max-width: initial;
+    }
+}

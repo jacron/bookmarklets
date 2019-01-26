@@ -1,0 +1,17 @@
+#readerarticle {
+    max-width: 440px;
+}
+#readerarticle.dark .rich-link__link {
+    color: inherit;
+}
+#readerarticle .rich-link__byline,
+#readerarticle .rich-link__read-more-text {
+    color: #e05e00;
+}
+#readerarticle.dark aside * {
+    color: #333;
+}
+div.content__article-body {
+    font-size: 16px !important;
+    line-height: 24px !important;
+}

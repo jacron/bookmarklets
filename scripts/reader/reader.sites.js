@@ -42,19 +42,19 @@ const sites = [
         style: 'trouw'
     },
     {
+        host: 'www.volkskrant.nl',
+        selector: [
+            'article.artstyle'
+        ],
+        style: 'volkskrant'
+    },
+    {
         host: 'www.nrc.nl',
         selector: [
             '.intro-col',
             'figure.article__featured-image',
             '.article-container.main'
         ]
-    },
-    {
-        host: 'www.volkskrant.nl',
-        selector: [
-            'article'
-        ],
-        style: 'volkskrant'
     },
     {
         host: 'stackoverflow.com',
@@ -91,3 +91,8 @@ const sites = [
 function getSites() {
     return sites;
 }
+
+function getSite(host) {
+    return sites.find(site => site.host === host);
+}
+

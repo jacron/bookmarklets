@@ -1,0 +1,39 @@
+#cmdtoggle:hover,
+#cmdclose:hover {
+    background-color: #666;
+}
+#cmdtoggle,
+#cmdclose {
+    color: #eff;
+}
+#readerarticle a {
+    color: rgb(90, 200, 250) !important;
+    text-decoration: none;
+    border-bottom: none !important;
+}
+#readerarticle p,
+#readerarticle h1,
+#readerarticle h2,
+#readerarticle h3,
+#readerarticle i,
+#readerarticle time,
+#readerarticle figcaption,
+#readerarticle figcaption span,
+#readerarticle footer,
+#readerarticle blockquote {
+    color: rgba(255, 255, 255, 0.780392);
+}
+body {
+    background-color: rgba(0, 0, 0, 0.76);
+}
+#readerarticle {
+    /*    background-color: rgba(174, 174, 177, 0.20) !important;*/
+    background-color: #666;
+    box-shadow: 0 6px 12px 3px rgba(0, 0, 0, 0.24);
+}
+#readerarticle aside * {
+    color: inherit;
+}
+.content-container {
+    background-color: #666;
+}
