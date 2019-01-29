@@ -5,3 +5,7 @@ main .body {
     font-size: 20px;
     line-height: 28px;
 }
+#readerarticle p {
+    line-height: 1.6;
+    font-size: 20px;
+}

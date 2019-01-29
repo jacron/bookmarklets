@@ -1,0 +1,9 @@
+figure.topper__visual {
+    left: inherit;
+    margin-left: inherit;
+    width: auto;
+}
+.dark .n-content-layout-set,
+.dark .n-content-layout {
+    background-color: #888888;
+}

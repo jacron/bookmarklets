@@ -2,6 +2,10 @@
 .artstyle__header {
     margin-right: auto !important;
 }
+.artstyle__header-title,
+.artstyle__intro {
+    line-height: inherit !important;
+}
 body.dark,
 .dark nav,
 .dark nav a,
@@ -19,8 +23,12 @@ body.dark,
 .dark .teaser__header,
 .dark .teaser__title--small
 {
-    /*color: #eee !important;*/
+    color: #eee !important;
 }
 .dark header.app-header-home {
     background-color: #666 !important;
+}
+.dark .wl-teaser--basic {
+    background-color: #888 !important;
+
 }

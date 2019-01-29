@@ -3,7 +3,8 @@
 }
 #readerarticle p {
     font-size: 24px;
-    font-family: Georgia;
+    /*font-family: Georgia, serif;*/
+    line-height: 1.5;
 }
 #readerarticle {
     max-width: 820px;

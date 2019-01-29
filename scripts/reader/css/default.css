@@ -1,4 +1,5 @@
 #cmdtoggle,
+#cmdreset,
 #cmdclose {
     display: inline-block;
     cursor: pointer;
@@ -22,7 +23,7 @@
     right: 60px;
     top: 60px;
 }
-.cmdcontainer{
+.cmd-toggle-container{
     width: 100%;
     text-align: right;
 }

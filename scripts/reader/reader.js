@@ -9,18 +9,6 @@
 
 const scriptpath = 'https://bookmarklets/scripts/reader/';
 
-function createHostsTable() {
-    const table = document.createElement('table');
-    getSites().forEach(site => {
-        const row = document.createElement('tr');
-        const data = document.createElement('td');
-        data.innerText = site.host;
-        row.appendChild(data);
-        table.appendChild(row);
-    });
-    return table;
-}
-
 function getNodes(site) {
     const nodes = [];
     for (let i = 0; i < site.selector.length; i++) {
@@ -44,123 +32,9 @@ function getNodes(site) {
     return nodes;
 }
 
-function createToggleButton() {
-    const
-        cmdcontainer = document.createElement('div'),
-        cmdbutton = document.createElement('div');
-    cmdbutton.id = 'cmdtoggle';
-    cmdbutton.innerHTML = 'o';
-    cmdbutton.setAttribute('title', 'Toggle dark mode');
-    cmdcontainer.className = 'cmdcontainer';
-    cmdcontainer.appendChild(cmdbutton);
-    return cmdcontainer;
-}
-
-function injectToggleButton() {
-    const button = createToggleButton();
-    button.className = 'standalone';
-    document.body.appendChild(button);
-}
-
-function loadStylesheet(name, id) {
-    const link = document.createElement( "link" );
-    link.href = `${scriptpath}css/${name}.css`;
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    link.media = "screen,print";
-    link.id = id;
-    return link;
-}
-
-function removeStylesheet(id) {
-    const style = document.getElementById(id);
-    if (style) {
-        style.parentNode.removeChild(style);
-    }
-}
-
-function toggleArticleDarkMode() {
-    if (localStorage.getItem('darkmode') !== 'on') {
-        const style = loadStylesheet('dark', 'dark');
-        document.getElementsByTagName('head')[0].appendChild(style);
-        localStorage.setItem('darkmode', 'on');
-        document.getElementById('readerarticle').className = 'dark';
-    } else {
-        localStorage.setItem('darkmode', 'off');
-        removeStylesheet('dark');
-        document.getElementById('readerarticle').className = '';
-    }
-}
-
-function toggleBodyDarkMode() {
-    const bodydarkmode = localStorage.getItem('bodydarkmode');
-    // console.log(bodydarkmode);
-    if (!bodydarkmode || bodydarkmode !== 'on') {
-        const style = loadStylesheet('dark', 'bodydark');
-        document.getElementsByTagName('head')[0].appendChild(style);
-        localStorage.setItem('bodydarkmode', 'on');
-        document.body.className = 'dark';
-    } else {
-        localStorage.setItem('bodydarkmode', 'off');
-        removeStylesheet('bodydark');
-        console.log(document.body.className);
-        document.body.className = '';
-    }
-}
-
-function createContainer(nodes) {
-    const container = document.createElement('div');
-    container.className = 'content-container';
-    const article = document.createElement('div');
-    article.appendChild(createToggleButton());
-    article.id = 'readerarticle';
-    for (let i = 0; i < nodes.length; i++) {
-        article.appendChild(nodes[i]);
-    }
-    container.appendChild(article);
-    return container;
-}
-
 function injectNodes(nodes) {
     const container = createContainer(nodes);
     document.body.innerHTML = container.innerHTML;
-}
-
-function addEventToggleArticle() {
-    document.body.addEventListener('click', function (ev) {
-        if (ev.target['id'] === 'cmdtoggle') {
-            toggleArticleDarkMode();
-        }
-    });
-}
-
-function addEventToggleBody() {
-    document.body.addEventListener('click', function (ev) {
-        if (ev.target['id'] === 'cmdtoggle') {
-            toggleBodyDarkMode();
-        }
-    });
-}
-
-function injectStylesheets(site, element) {
-    const defaultStyle = loadStylesheet('default', 'default');
-    let siteStyle = null;
-    let darkStyle = null;
-    if (element === 'article' && localStorage.getItem('darkmode') === 'on') {
-        darkStyle = loadStylesheet('dark', 'dark');
-    }
-    if (element === 'body' && localStorage.getItem('bodydarkmode') === 'on') {
-        document.body.className = 'dark';
-        darkStyle = loadStylesheet('dark', 'bodydark');
-    }
-    if (site.style) {
-        siteStyle = loadStylesheet(site.style, site.style);
-    }
-    const fragment = document.createDocumentFragment();
-    fragment.appendChild(defaultStyle);
-    if (siteStyle) { fragment.appendChild(siteStyle); }
-    if (darkStyle) { fragment.appendChild(darkStyle); }
-    document.getElementsByTagName('head')[0].appendChild(fragment);
 }
 
 function injectArticle(nodes, site) {
@@ -169,6 +43,7 @@ function injectArticle(nodes, site) {
     injectNodes(nodes);
     document.getElementById('readerarticle').className = 'dark';
     addEventToggleArticle();
+    addEventReset();
 }
 
 function bodyDark(site) {
@@ -177,7 +52,17 @@ function bodyDark(site) {
     addEventToggleBody();
 }
 
-function themeSite(site) {
+function loadScript(url, callback) {
+    const s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.src = url;
+    s.onreadystatechange = callback;
+    s.onload = callback;
+    document.head.appendChild(s);
+}
+
+function themeSite() {
+    const site = currentsite;
     const nodes = getNodes(site);
     if (nodes.length > 0) {
         injectArticle(nodes, site);
@@ -187,16 +72,32 @@ function themeSite(site) {
     }
 }
 
+function loadSite() {
+    const filename = `${scriptpath}sites/${location.host}.js`;
+    loadScript(filename, themeSite);
+}
+
+function loadCmd() {
+    loadScript(`${scriptpath}cmd.js`, loadSite);
+}
+
+function loadStylesheetJs() {
+    loadScript(`${scriptpath}stylesheet.js`, loadCmd);
+}
+
+function loadCreateJs() {
+    loadScript(`${scriptpath}create.js`, loadStylesheetJs);
+}
+
 function run() {
+    // console.log(location);
     console.log(location.host);
-    const site = getSite(location.host);
-    // console.log(site);
-    if (site) {
-        themeSite(site);
+    // console.log(filename);
+    if (location.search !== '?noreader') {
+        // load create.js, stylesheet.js, cmd.js, [site].js
+        // NB don't change the order of these
+        loadCreateJs();
     }
-    // provisionary showing the list of hosts
-    // const hostsTable = createHostsTable();
-    // document.body.appendChild(hostsTable);
 }
 
 run();

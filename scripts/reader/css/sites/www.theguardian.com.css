@@ -1,0 +1,39 @@
+#readerarticle {
+    max-width: 440px;
+}
+#readerarticle .rich-link__byline,
+#readerarticle .rich-link__read-more-text {
+    color: #e05e00;
+}
+div.content__article-body {
+    font-size: 16px !important;
+    line-height: 24px !important;
+    padding-right: 0 !important;
+}
+.content__headline-showcase-wrapper {
+    display: none;
+}
+.content__standfirst {
+    line-height: 1.6rem !important;
+}
+#readerarticle.dark .rich-link__link {
+    color: inherit;
+}
+#readerarticle.dark aside * {
+    color: #333;
+}
+.dark .content--liveblog .content__main {
+    background-color: inherit;
+}
+.dark .content,
+.dark .dropdown__content,
+.dark .block--content,
+.dark figcaption.caption {
+    background-color: #555555 !important;
+}
+.dark .timeline__title {
+    color: #e05e00 !important;
+}
+.dark .atom--snippet {
+    background-color: #888888 !important;
+}

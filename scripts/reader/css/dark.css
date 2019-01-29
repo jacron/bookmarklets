@@ -24,7 +24,8 @@
     color: rgba(255, 255, 255, 0.780392);
 }
 body {
-    background-color: rgba(0, 0, 0, 0.76);
+    background-color: #333333;
+            /*rgba(0, 0, 0, 0.76);*/
 }
 #readerarticle {
     /*    background-color: rgba(174, 174, 177, 0.20) !important;*/
@@ -36,4 +37,7 @@ body {
 }
 .content-container {
     background-color: #666;
+}
+html.article-page {
+    background-color: #333333;
 }
