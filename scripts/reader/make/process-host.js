@@ -1,19 +1,7 @@
 const fs = require("fs");
+const writeCss = require('./write-css');
 const sitesFile = 'scripts/reader/sites.js';
 
-function writeCss(host) {
-    const cssFile = 'scripts/reader/css/sites/' + host + '.css';
-    const templ = `/* ${host} */\n`;
-    fs.writeFile(cssFile, templ, { flag: 'wx'}, (err) => {
-        if (err) {
-            if (err.code === 'EEXIST') {
-                console.error(cssFile + ' already exists');
-            }
-            throw err;
-        }
-        console.log(cssFile + ' was saved');
-    });
-}
 
 function insertHost(data, host) {
     const pos = data.indexOf('}');
@@ -39,7 +27,7 @@ function writeInSites(host) {
         }
         const idata = insertHost(data, host);
         writeHostInSites(idata);
-        writeCss(host);
+        writeCss.writeCss(host);
     });
 }
 

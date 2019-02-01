@@ -37,7 +37,7 @@ const sites = {
     'theguardian.com': [
         ['article', '.content__main-column'],
     ],
-    'trouw.nl':  [
+    'trouw.nl': [
         '.article__header__title',
         '.article__header__meta',
         'figure.article__cover',
@@ -54,7 +54,5 @@ const sites = {
     'washingtonpost.com': [
         '#top-content',
         '#article-body'
-    ],
-    'test': [
     ],
 };
