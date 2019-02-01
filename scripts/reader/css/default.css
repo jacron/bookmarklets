@@ -36,7 +36,7 @@ body {
     overflow-x: hidden;
     background-color: transparent;
     height: calc(100% - 44px);
-    font-family: Georgia;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
     --body-font-color: rgba(255, 255, 255, 0.78);
     --horizontal-line-color: rgb(111, 111, 111);
 }

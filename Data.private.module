@@ -36,7 +36,7 @@ $tiles = array(
         'body' => "I wrote this to have a quick view on pictures that are collected on 'Index of' pages.",
         'scriptFile' => 'opener3.js',
         'link' => 'open',
-        'file' => 'opener3.js',
+        'file' => 'opener/opener3.js',
         'icon' => 'image'
     ),
     // IMDb store new film (3)
@@ -44,7 +44,7 @@ $tiles = array(
         'title' => 'IMDb3',
         'subtitle' => 'Nieuwe film in catalogus',
         'body' => "When in a IMDb title page, add the movie to my catalogue.",
-        'file' => 'newfilm3.js',
+        'file' => 'newfilm/newfilm3.js',
         'link' => 'newfilm3',
         'icon' => 'nmovies',
     ),
@@ -54,7 +54,7 @@ $tiles = array(
         'subtitle' => 'Tekst netjes lezen',
         'body' => "",
 //        'file' => 'readtext3.js',
-        'scriptFile' => 'readtext3.js?v=2.0',
+        'scriptFile' => 'read/readtext3.js?v=2.0',
         'link' => 'read4',
         'icon' => '',
     ),

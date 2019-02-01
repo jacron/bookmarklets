@@ -1,0 +1,10 @@
+body {
+    font-size: 20px;
+    text-align: left;
+}
+p {
+    line-height: 1.8;
+}
+.dark .entry {
+    background-color: #888888 !important;
+}

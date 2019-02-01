@@ -5,3 +5,6 @@ const currentsite =     {
     ],
     style: 'angulario'
 };
+const selector =[
+    'aio-doc-viewer'
+];

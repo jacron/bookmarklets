@@ -6,3 +6,7 @@ const currentsite =     {
     ],
     style: 'stackoverflow'
 };
+const selector = [
+    '#question-header',
+    '#mainbar',
+];

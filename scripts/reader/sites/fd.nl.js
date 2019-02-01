@@ -6,3 +6,7 @@ const currentsite = {
   ],
   style: "fd"
 };
+const selector = [
+  "article h1",
+  "main .body",
+];

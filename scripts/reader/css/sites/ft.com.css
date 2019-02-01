@@ -1,0 +1,16 @@
+figure.topper__visual {
+    left: inherit;
+    margin-left: inherit;
+    width: auto;
+}
+.n-content-body,
+.n-content-body>p {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    /*font-size: 16px;*/
+}
+
+.dark .n-content-layout-set,
+.dark .n-content-layout,
+.dark .live-post {
+    background-color: inherit;
+}

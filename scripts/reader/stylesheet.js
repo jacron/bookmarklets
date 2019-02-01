@@ -1,6 +1,6 @@
-function injectStylesheets(site, element) {
+function injectStylesheets(short_host, element) {
     const defaultStyle = loadStylesheet('default', 'default');
-    let siteStyle = null;
+    // let siteStyle = null;
     let darkStyle = null;
     if (element === 'article' && localStorage.getItem('darkmode') === 'on') {
         darkStyle = loadStylesheet('dark', 'dark');
@@ -9,9 +9,10 @@ function injectStylesheets(site, element) {
         document.body.className = 'dark';
         darkStyle = loadStylesheet('dark', 'bodydark');
     }
-    if (site.style) {
-        siteStyle = loadStylesheet(site.host, site.host, 'sites/');
-    }
+    // if (site.style)
+    // {
+    const siteStyle = loadStylesheet(short_host, short_host, 'sites/');
+    // }
     const fragment = document.createDocumentFragment();
     fragment.appendChild(defaultStyle);
     if (siteStyle) { fragment.appendChild(siteStyle); }

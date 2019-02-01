@@ -23,7 +23,7 @@ function createResetButton() {
     return createButton(
         'cmdreset',
         'cmd-reset-container',
-        'o',
+        'x',
         'Normal view'
     );
 }

@@ -8,10 +8,10 @@
 .dark .post-tag,
 .dark textarea,
 .dark pre,
-.dark aio-code,
+.dark .aio-code,
 .dark .s-btn__primary {
     background-color: inherit;
 }
-.dark aio-code {
+.dark .aio-code {
     rgba(241,241,241,0.2) !important;
 }
