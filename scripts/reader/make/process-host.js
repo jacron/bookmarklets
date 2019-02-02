@@ -1,6 +1,6 @@
 const fs = require("fs");
 const writeCss = require('./write-css');
-const sitesFile = 'scripts/reader/sites.js';
+const sitesFile = '/Users/orion/PhpstormProjects/bookmarklets/scripts/reader/sites.js';
 
 
 function insertHost(data, host) {

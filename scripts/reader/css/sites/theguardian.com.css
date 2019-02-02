@@ -37,3 +37,10 @@ div.content__article-body {
 .dark .atom--snippet {
     background-color: #888888 !important;
 }
+.dark .content--liveblog.tonal--tone-dead.content--pillar-news .content__header,
+.dark .content--liveblog.tonal--tone-dead.content--pillar-news .tonal__standfirst {
+    background: inherit;
+}
+.email-sub__form-wrapper {
+    display: none;
+}

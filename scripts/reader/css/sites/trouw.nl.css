@@ -16,3 +16,16 @@
     font-size: 26px;
     line-height: 36px;
 }
+body.dark,
+.dark nav,
+.dark nav a,
+.dark article,
+.dark section,
+.dark header {
+    background-color: #666 !important;
+    color: #eee !important;
+}
+.dark h2,
+.dark .teaser__text {
+    color: #eee !important;
+}

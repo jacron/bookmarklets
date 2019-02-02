@@ -1,0 +1,20 @@
+body.dark,
+.dark nav,
+.dark nav a,
+.dark article,
+.dark section,
+.dark .block--with-gaps .block__news__inner, .block__news__inner,
+.dark header {
+    background-color: #666 !important;
+    color: #eee !important;
+}
+.dark h2,
+.dark .timed-articles a,
+.dark .teaser__text {
+    color: #eee !important;
+}
+.dark .block--with-gaps .block__news__inner, .block__news__inner
+
+#cmdtoggle {
+    margin: 80px 0 0 0;
+}

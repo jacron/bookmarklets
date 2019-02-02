@@ -6,6 +6,15 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 rl.question('(short) host? ', (answer) => {
-    processHost.processHost(answer);
-    rl.close();
+    // console.log(answer.length);
+    if (answer.length > 0) {
+        processHost.processHost(answer);
+        rl.close();
+        // process.exit(0);
+    } else {
+        rl.close();
+        process.exit(0);
+    }
+    // rl.close();
+    // process.exit(0);
 });

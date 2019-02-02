@@ -51,6 +51,7 @@ function injectArticle(short_host, nodes) {
 }
 
 function bodyDark(short_host) {
+    console.log('body dark');
     injectStylesheets(short_host, 'body');
     injectToggleButton();
     addEventToggleBody();
@@ -61,7 +62,7 @@ function themeSite() {
     let selector = sites[short_host];
     if (selector) {
         let nodes = getNodes(selector);
-        console.log(nodes);
+        // console.log(nodes);
         if (nodes.length > 0) {
             injectArticle(short_host, nodes);
             reader_done = true;

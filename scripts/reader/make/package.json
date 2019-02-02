@@ -1,0 +1,12 @@
+{
+  "name": "make-reader-site",
+  "version": "1.0.0",
+  "dependencies": {
+    
+  },
+  "scripts": {
+    "makesite": "node /Users/orion/PhpstormProjects/bookmarklets/scripts/reader/make/make-reader-site.js",
+    "opensitesfile": "open /Users/orion/PhpstormProjects/bookmarklets/scripts/reader/sites.js",
+    "makesite:complete": "npm run makesite && npm run opensitesfile"
+  }
+}
