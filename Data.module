@@ -13,7 +13,7 @@ $tiles = array(
         'subtitle' => 'Tekst netjes lezen',
         'body' => "",
 //        'file' => 'readtext3.js',
-        'scriptFile' => 'readtext3.js?v=2.0',
+        'scriptFile' => 'read/readtext3.js?v=2.0',
         'link' => 'read3',
         'icon' => '',
     ),
@@ -98,7 +98,7 @@ $tiles = array(
     'title' => 'Image Opener',
     'subtitle' => 'Load hyperlinked images',
     'body' => "I wrote this to have a quick view on pictures that are collected on 'Index of' pages.",
-    'file' => 'opener3.js',
+    'file' => 'opener/opener3.js',
     'link' => 'open',
     'icon' => 'image'
   ),

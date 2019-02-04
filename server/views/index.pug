@@ -1,0 +1,22 @@
+html
+    head
+        title= title
+        link(href='/style.css', rel='stylesheet')
+        script(src='/script.js')
+    body
+        h1= message
+    table
+        tr
+            th Name
+            th Selector
+        each selector, name in sites
+            tr
+                td
+                    div(onclick="alert('hey');rd('" + name + "')") #{name}
+                td
+                    each sel in selector
+                        div= sel
+                td
+                    form(method='post')
+                        input(type='hidden' name='name' value=name)
+                        input(type='submit', value='css')

@@ -14,21 +14,21 @@ $tiles = array(
     // emulate the Safari tool on chrome
     // with minimal hassle
     // (as opposed to the bulky extension Just Read)
-    array(
-        'title' => 'Reader View',
-        'subtitle' => 'Safari\'s Reader View on Chrome',
-        'body' => "Includes a switch for dark mode",
-        'scriptFile' => [
-            'reader/reader.themes.js',
-            'reader/reader.sites.js',
-            'reader/reader.js'],
-        'link' => 'reader',
-        'file' => [
-            'reader/reader.themes.js',
-            'reader/reader.sites.js',
-            'reader/reader.js'],
-        'icon' => 'image'
-    ),
+//    array(
+//        'title' => 'Reader View',
+//        'subtitle' => 'Safari\'s Reader View on Chrome',
+//        'body' => "Includes a switch for dark mode",
+//        'scriptFile' => [
+//            'reader/reader.themes.js',
+//            'reader/reader.sites.js',
+//            'reader/reader.js'],
+//        'link' => 'reader',
+//        'file' => [
+//            'reader/reader.themes.js',
+//            'reader/reader.sites.js',
+//            'reader/reader.js'],
+//        'icon' => 'image'
+//    ),
     // Open images on an index page (3)
     array(
         'title' => 'Image Opener (3)',

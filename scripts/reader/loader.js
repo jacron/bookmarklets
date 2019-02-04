@@ -1,6 +1,5 @@
 // globals
 const scriptpath = 'https://bookmarklets/scripts/reader/';
-let reader_done = false;
 
 function loadScript(url, callback) {
     const s = document.createElement('script');

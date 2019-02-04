@@ -55,4 +55,8 @@ const sites = {
         '#top-content',
         '#article-body'
     ],
+    'medium.com' : [
+        // '.section--body',
+    ],
 };
+module.exports = sites;
