@@ -24,8 +24,8 @@ app.post('/', (req, res) => {
     // console.log(req.body.name);
     //               /Users/orion/PhpstormProjects/bookmarklets/scripts/reader/css/sites/fd.nl.css
     const cssPath = `/Users/orion/PhpstormProjects/bookmarklets/scripts/reader/css/sites/${req.body.name}.css`;
-    console.log(cssPath);
-    exec('webstorm ' + cssPath, (err, stdout, stderr) => {
+    // console.log(cssPath);
+    exec('pstorm ' + cssPath, (err, stdout, stderr) => {
         if (err) {
             console.log(err);
         }
