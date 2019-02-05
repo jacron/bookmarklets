@@ -15,6 +15,9 @@ const sites = {
         ["figure.topper__visual", ".main-image"],
         ".article__content-body"
     ],
+    'medium.com' : [
+        // '.section--body',
+    ],
     'nrc.nl': [
         '.intro-col',
         'figure.article__featured-image',
@@ -37,16 +40,16 @@ const sites = {
     'theguardian.com': [
         ['article', '.content__main-column'],
     ],
+    'theverge.com': [
+        '.c-entry-hero',
+        '@.c-entry-content',
+        '.l-col__main'
+    ],
     'trouw.nl': [
         '.article__header__title',
         '.article__header__meta',
         'figure.article__cover',
         '.fjs-article__main'
-    ],
-    'theverge.com': [
-        '.c-entry-hero',
-        '@.c-entry-content',
-        '.l-col__main'
     ],
     'volkskrant.nl': [
         'article.artstyle'
@@ -54,9 +57,6 @@ const sites = {
     'washingtonpost.com': [
         '#top-content',
         '#article-body'
-    ],
-    'medium.com' : [
-        // '.section--body',
     ],
 };
 module.exports = sites;

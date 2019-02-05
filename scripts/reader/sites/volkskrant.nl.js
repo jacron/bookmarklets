@@ -1,11 +1,3 @@
-const currentsite =     {
-    host: 'volkskrant.nl',
-    selector: [
-        'article.artstyle'
-    ],
-    main: true,
-    style: 'volkskrant'
-};
-const selector = [
+selector = [
     'article.artstyle'
 ];

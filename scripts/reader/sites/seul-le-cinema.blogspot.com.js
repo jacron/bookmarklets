@@ -1,3 +1,3 @@
-const selector = [
+selector = [
     '.content-inner'
 ];

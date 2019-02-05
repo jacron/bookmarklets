@@ -1,10 +1,11 @@
 // globals
 const scriptpath = 'https://bookmarklets/scripts/reader/';
+let selector;
 
 function loadScript(url, callback) {
     const s = document.createElement('script');
     s.type = 'text/javascript';
-    s.src = scriptpath + url;
+    s.src = url;
     // s.onreadystatechange = callback;
     s.onload = callback;
     s.onerror = onError;
@@ -25,30 +26,38 @@ function goAhead() {
     themeSite();
 }
 
-function loadReader() {
-    loadScript(`reader.js`, goAhead);
+function loadSelector() {
+    const short_host = getShortHost();
+    const site_path = `${scriptpath}sites/${short_host}.js`;
+    loadScript(site_path, goAhead);
 }
 
-function loadSites() {
-    loadScript(`sites.js`, loadReader);
+function loadReader() {
+    loadScript(`${scriptpath}reader.js`, loadSelector);
 }
+
+// function loadSites() {
+//     loadScript(`sites.js`, loadReader);
+// }
 
 function loadCmd() {
-    loadScript(`cmd.js`, loadSites);
+    loadScript(`${scriptpath}cmd.js`, loadReader);
 }
 
 function loadStylesheetJs() {
-    loadScript(`stylesheet.js`, loadCmd);
+    loadScript(`${scriptpath}stylesheet.js`, loadCmd);
 }
 
 function loadCreateJs() {
-    loadScript(`create.js`, loadStylesheetJs);
+    loadScript(`${scriptpath}create.js`, loadStylesheetJs);
 }
 
 function run() {
     // console.log(location);
     console.log(location.host);
-    if (location.search.indexOf('?noreader') === -1) {
+    if (location.hostname !== 'localhost' &&
+        location.hostname.indexOf('0.0.') === -1 &&
+        location.search.indexOf('?noreader') === -1) {
         // load create.js, stylesheet.js, cmd.js, reader.js, [site].js
         // NB don't change the order of these
         loadCreateJs();

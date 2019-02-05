@@ -1,42 +1,49 @@
 const fs = require("fs");
 
 const {cssPath, sitesPath} = require('./path');
-const {inDictionary}  = require('./dictionary');
-const {opencss, opensites} = require('./open-file');
+const {opencss, openselector} = require('./open-file');
 
-const insertHost = (data, host) => {
-    const pos = data.indexOf('}');
-    return data.substr(0, pos) +
-        `    '${host}': [\n    ],\n` + data.substr(pos);
+const writeFile = (file, templ, exists) => {
+    if (fs.existsSync(file)) {
+        console.log(exists);
+        return {status: 300, message: exists};
+    }
+    fs.writeFileSync(file, templ, 'utf8');
+    return {status: 200}
 };
 
-const writeSites = name => {
-    const sitesJs = fs.readFileSync(sitesPath, 'utf8');
-    const idata = insertHost(sitesJs, name);
-    fs.writeFileSync(sitesPath, idata);
+const writeSite = host => {
+    const siteFile = sitesPath + host + '.js';
+    return writeFile(
+        siteFile,
+        `selector = [\n];\n`,
+        siteFile + ' bestaat al!'
+    );
 };
 
 const writeCss = host => {
     const cssFile = cssPath + 'sites/' + host + '.css';
-    const templ = `/* ${host} */\n`;
-    if (fs.existsSync(cssFile)) {
-        console.log(cssFile + ' bestaat al!');
-        return;
-    }
-    fs.writeFileSync(cssFile, templ, 'utf8');
+    return writeFile(
+        cssFile,
+        `/* ${host} */\n`,
+        cssFile + ' bestaat al!'
+    );
 };
 
-newsite = (name, sites) => {
+newsite = name => {
     if (!name) {
         return 'De naam is niet ingevuld';
     }
-    if (inDictionary(sites, name)) {
-        return 'Deze host bestaat al';
+    const retSite = writeSite(name);
+    if (retSite.status !== 200) {
+        return retSite.message;
     }
-    writeSites(name);
-    writeCss(name);
+    const retCss = writeCss(name);
+    if (retCss.status !== 200) {
+        return retCss.message;
+    }
     opencss(name);
-    opensites();
+    openselector(name);
     return 'De website is toegevoegd: ' + name;
 };
 

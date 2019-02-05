@@ -42,6 +42,10 @@ function createContainer(nodes) {
     return container;
 }
 
+function getShortHost() {
+    return location.host.replace('www.', '');
+}
+
 // function createHostsTable() {
 //     const table = document.createElement('table');
 //     getSites().forEach(site => {

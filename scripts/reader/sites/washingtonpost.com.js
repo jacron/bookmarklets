@@ -1,12 +1,4 @@
-const currentsite =     {
-    host: 'washingtonpost.com',
-    selector: [
-        '#top-content',
-        '#article-body'
-    ],
-    style: 'washingtonpost'
-};
-const selector = [
+selector = [
     '#top-content',
     '#article-body'
 ];

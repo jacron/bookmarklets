@@ -39,7 +39,8 @@ const Nodes = function(nodes) {
         return this;
     };
 
-    this.injectArticle = short_host => {
+    this.injectArticle = () => {
+        const short_host = getShortHost();
         if (nodes.length > 0) {
             document.body.innerHTML = '';
             injectStylesheets(short_host, 'article');
@@ -60,11 +61,10 @@ const Nodes = function(nodes) {
 };
 
 function themeSite() {
-    const short_host = location.host.replace('www.', '');
-    let selector = sites[short_host];
+    // let selector = sites[short_host];
     if (selector) {
         new Nodes([])
             .get(selector)
-            .injectArticle(short_host);
+            .injectArticle();
     }
 }

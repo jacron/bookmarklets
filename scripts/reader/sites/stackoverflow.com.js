@@ -1,12 +1,4 @@
-const currentsite =     {
-    host: 'stackoverflow.com',
-    selector: [
-        '#question-header',
-        '#mainbar',
-    ],
-    style: 'stackoverflow'
-};
-const selector = [
+selector = [
     '#question-header',
-    '#mainbar',
+    '#mainbar'
 ];

@@ -6,12 +6,19 @@ tr:nth-child(even) {
 }
 table {
     font-family: monospace;
+    margin: auto;
+}
+.top-section {
+    margin: auto;
+    width: fit-content;
 }
 td {
     padding: 6px;
 }
 .opened {
     color: blue;
+    border-color: blue;
+    border-radius: 4px;
 }
 .hidden {
     display: none;
@@ -22,19 +29,21 @@ td {
 body {
     background-color: #888888;
 }
-.header {
-    color: #eee;
-}
 .message {
     font-style: italic;
     margin-bottom: 18px;
     color: blue;
     height: 18px;
+    padding: 2px 4px;
 }
 .message.active {
     background-color: #bbbbcc;
 }
 .header {
-    font-size: 18px;
+    color: #eee;
+    font-size: 22px;
     margin-bottom: 4px;
+}
+input {
+    font-size: 16px;
 }

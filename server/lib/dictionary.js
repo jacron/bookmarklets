@@ -12,24 +12,24 @@ const sortDictionary = (oldDict) => {
     return dict;
 };
 
-const filterDictionary = (oldDict, q) => {
-    if (!q) {
-        return oldDict;
-    }
-    let filtered = [];
-    for (let key in oldDict) {
-        if (oldDict.hasOwnProperty(key)) {
-            if (key.indexOf(q) !== -1) {
-                filtered[filtered.length] = key;
-            }
-        }
-    }
-    let dict = {};
-    for (let i = 0; i < filtered.length; i++) {
-        dict[filtered[i]] = oldDict[filtered[i]];
-    }
-    return dict;
-};
+// const filterDictionary = (oldDict, q) => {
+//     if (!q) {
+//         return oldDict;
+//     }
+//     let filtered = [];
+//     for (let key in oldDict) {
+//         if (oldDict.hasOwnProperty(key)) {
+//             if (key.indexOf(q) !== -1) {
+//                 filtered[filtered.length] = key;
+//             }
+//         }
+//     }
+//     let dict = {};
+//     for (let i = 0; i < filtered.length; i++) {
+//         dict[filtered[i]] = oldDict[filtered[i]];
+//     }
+//     return dict;
+// };
 
 const inDictionary = (dict, nkey) => {
     for (let key in dict) {
@@ -42,4 +42,4 @@ const inDictionary = (dict, nkey) => {
     return false;
 };
 
-module.exports = {sortDictionary, filterDictionary, inDictionary};
+module.exports = {sortDictionary, inDictionary};

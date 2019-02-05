@@ -3,41 +3,52 @@ html
         title= title
         link(href='/style.css', rel='stylesheet')
         script(src='/script.js')
-    script(src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous")
+        script(src="https://code.jquery.com/jquery-3.3.1.min.js"
+          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+          crossorigin="anonymous")
     body
-        .header Reader Configuratie
-        .message(class={active: message})= message
-    form(method='post')
-        input(type='hidden' name='cmd' value='editsites')
-        input(type='submit' name='submit' class={opened: sitesopened}
-        value='Bewerk selectors')
-    input(type='text' name='query' value=query id='q'
-      placeholder='filter' onkeyup='onfilter(this.value)')
-    button(onclick="clearfilter()") x
-    br
-    br
-    form(method='post')
-        input(type='hidden' name='cmd' value='newsite')
-        input(type='text' name='name'
-          placeholder='nieuwe website')
-        input(type='submit' value='>')
-    table
-        tr
-            th Name
-            th Selector
-            th Css
-        each selector, name in sites
-            tr(class={opened: cssopened === name} id=name)
-                td
-                    div= name
-                td(class='selector')
-                    each sel in selector
-                        div= sel
-                td
-                    form(method='post')
-                        input(type='hidden' name='cmd' value='editcss')
-                        input(type='hidden' name='name' value=name)
-                        input(type='submit' name='submit' class={opened: cssopened === name}
-                          value='css')
+        .top-section
+            .header Reader Configuratie
+            .message(class={active: message})= message
+            input(type='text' name='query' value=query id='q'
+              placeholder='filter' onkeyup='onfilter(this.value)')
+            button(onclick="clearfilter()") x
+            br
+            br
+            form(method='post')
+                input(type='hidden' name='cmd' value='newsite')
+                input(type='text' name='name'
+                  placeholder='nieuwe website')
+                input(type='submit' value='>')
+        table
+            tr
+                th Name
+                th Selector
+                th Css
+                th Sel.
+                th Del.
+            each selector, name in sites
+                tr(class={opened: cssopened === name} id=name)
+                    td
+                        div= name
+                    td(class='selector')
+                        each sel in selector
+                            div= sel
+                    td
+                        form(method='post')
+                            input(type='hidden' name='cmd' value='editcss')
+                            input(type='hidden' name='name' value=name)
+                            input(type='submit' name='submit' class={opened: cssopened === name}
+                              value='css')
+                    td
+                        form(method='post')
+                            input(type='hidden' name='cmd' value='editselector')
+                            input(type='hidden' name='name' value=name)
+                            input(type='submit' name='submit' class={opened: selectoropened === name}
+                              value='sel')
+                    td
+                        form(method='post')
+                            input(type='hidden' name='cmd' value='delete')
+                            input(type='hidden' name='name' value=name)
+                            input(type='submit' name='submit' class={deleted: deleted === name}
+                              value='X' onclick="return confirm('Zeker weten?')")

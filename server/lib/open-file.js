@@ -1,7 +1,16 @@
+const fs = require("fs");
 const { exec } = require('child_process');
 const {cssPath, sitesPath} = require('./path');
 
-openFile = (path, success) => {
+const deleteFile = (path) => {
+    if (fs.existsSync(path)) {
+        fs.unlinkSync(path);
+        return true;
+    }
+    return false;
+};
+
+const openFile = (path, success) => {
     exec('pstorm ' + path, (err, stdout, stderr) => {
         if (err) {
             console.log(err);
@@ -14,15 +23,35 @@ openFile = (path, success) => {
 const opencss = name => {
     return openFile(
         cssPath +  `sites/${name}.css`,
-        'Geopend in PHPStorm: ' + name + '.css'
+        name + '.css is geopend in PHPStorm'
     );
 };
 
-const opensites = () => {
+// const watch = file => {
+//     fs.watch(file, (evtType, filename) => {
+//         console.log(evtType, filename);
+//     });
+// };
+
+const openselector = name => {
+    const file = sitesPath +  `${name}.js`;
+    // watch(file);
     return openFile(
-        sitesPath,
-        'sites.js geopend in PHPStorm'
+        file,
+        name + '.js is geopend in PHPStorm'
     );
 };
 
-module.exports = {opencss, opensites};
+const deleteSite = name => {
+    const siteFile = sitesPath +  `${name}.js`;
+    const cssFile = cssPath +  `sites/${name}.css`;
+    if (!deleteFile(siteFile)) {
+        return name + ' bestaat niet';
+    }
+    if (!deleteFile(cssFile)) {
+        return name + ' bestaat niet';
+    }
+    return name + ' is verwijderd';
+};
+
+module.exports = {opencss, openselector, deleteSite};

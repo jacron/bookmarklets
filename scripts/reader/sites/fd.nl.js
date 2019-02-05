@@ -1,12 +1,4 @@
-const currentsite = {
-  host: 'fd.nl',
-  selector: [
-    "article h1",
-    "main .body",
-  ],
-  style: "fd"
-};
-const selector = [
+selector = [
   "article h1",
-  "main .body",
+  "main .body"
 ];
