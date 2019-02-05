@@ -1,9 +1,8 @@
 const express = require('express');
 const bodyparser = require('body-parser');
 const sites = require('../scripts/reader/sites');
-const dictsort = require('./lib/sort-dictionary');
-const opencss = require('./lib/opencss');
-const opensites = require('./lib/opensites');
+const {sortDictionary, filterDictionary}  = require('./lib/sort-dictionary');
+const {opencss, opensites} = require('./lib/open-file');
 
 const app = express();
 const port = 3003;
@@ -14,28 +13,35 @@ app.use(bodyparser.json());
 app.set('view engine', 'pug');
 
 app.get('/', (req, res) => {
+    const q = req.query.query;
+    const items = filterDictionary(sortDictionary(sites), q);
     res.render('index', {
+        query: q,
         title: 'reader 1.0',
         message: 'Hallo daar',
-        sites: dictsort(sites)
+        sites: items
     });
 });
 
 app.post('/', (req, res) => {
-    const submit = req.body.submit;
+    const cmd = req.body.cmd;
     let message;
-    if (submit === 'css') {
-        opencss(req.body.name);
-        message = 'Geopend in PHPStorm: ' + req.body.name + '.css';
-    }
-    if (submit === 'sites') {
-        opensites();
-        message = 'sites.js geopend in PHPStorm';
+    let sitesopened = false;
+    switch(cmd) {
+        case 'editcss':
+            message = opencss(req.body.name);
+            break;
+        case 'editsites':
+            message = opensites();
+            sitesopened = true;
+            break;
     }
     res.render('index', {
+        cssopened: req.body.name,
+        sitesopened,
         title: 'reader 1.0',
-        message: message,
-        sites: dictsort(sites)
+        message,
+        sites: sortDictionary(sites)
     });
 });
 

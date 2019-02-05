@@ -12,4 +12,23 @@ sortDictionary = (oldDict) => {
     return dict;
 };
 
-module.exports = sortDictionary;
+filterDictionary = (oldDict, q) => {
+    if (!q) {
+        return oldDict;
+    }
+    let filtered = [];
+    for (let key in oldDict) {
+        if (oldDict.hasOwnProperty(key)) {
+            if (key.indexOf(q) !== -1) {
+                filtered[filtered.length] = key;
+            }
+        }
+    }
+    let dict = {};
+    for (let i = 0; i < filtered.length; i++) {
+        dict[filtered[i]] = oldDict[filtered[i]];
+    }
+    return dict;
+};
+
+module.exports = {sortDictionary, filterDictionary};

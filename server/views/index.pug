@@ -4,15 +4,20 @@ html
         link(href='/style.css', rel='stylesheet')
         script(src='/script.js')
     body
-        h1= message
+        h1= 'Reader Configuratie'
     form(method='post')
-        input(type='submit' name='submit' value='Bewerk selectors')
+        input(type='hidden' name='cmd' value='editsites')
+        input(type='submit' name='submit' class={opened: sitesopened}
+        value='Bewerk selectors')
+    form
+        input(type='text' name='query' value=query placeholder='name')
+        input(type='submit' value='>')
     table
         tr
             th Name
             th Selector
         each selector, name in sites
-            tr
+            tr(class={opened: cssopened === name})
                 td
                     div(onclick="alert('hey');rd('" + name + "')") #{name}
                 td
@@ -20,5 +25,7 @@ html
                         div= sel
                 td
                     form(method='post')
+                        input(type='hidden' name='cmd' value='editcss')
                         input(type='hidden' name='name' value=name)
-                        input(type='submit' name='submit' value='Bewerk css')
+                        input(type='submit' name='submit' class={opened: cssopened === name}
+                        value='Bewerk css')

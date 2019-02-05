@@ -4,3 +4,9 @@ tr:nth-child(odd) {
 table {
     font-family: monospace;
 }
+.opened {
+    color: blue;
+}
+.hidden {
+    display: none;
+}
