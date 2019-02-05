@@ -5,6 +5,8 @@ html
         script(src='/script.js')
     body
         h1= message
+    form(method='post')
+        input(type='submit' name='submit' value='Bewerk selectors')
     table
         tr
             th Name
@@ -19,4 +21,4 @@ html
                 td
                     form(method='post')
                         input(type='hidden' name='name' value=name)
-                        input(type='submit', value='css')
+                        input(type='submit' name='submit' value='Bewerk css')
