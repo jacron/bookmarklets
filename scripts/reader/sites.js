@@ -58,7 +58,5 @@ const sites = {
     'medium.com' : [
         // '.section--body',
     ],
-    'nijlgier': [
-    ],
 };
 module.exports = sites;

@@ -3,26 +3,33 @@ html
         title= title
         link(href='/style.css', rel='stylesheet')
         script(src='/script.js')
+    script(src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous")
     body
-        h2= 'Reader Configuratie'
-        span(class='message') #{message}
+        .header Reader Configuratie
+        .message(class={active: message})= message
     form(method='post')
         input(type='hidden' name='cmd' value='editsites')
         input(type='submit' name='submit' class={opened: sitesopened}
         value='Bewerk selectors')
-    form
-        input(type='text' name='query' value=query placeholder='naam')
-        input(type='submit' value='>')
+    input(type='text' name='query' value=query id='q'
+      placeholder='filter' onkeyup='onfilter(this.value)')
+    button(onclick="clearfilter()") x
+    br
+    br
     form(method='post')
         input(type='hidden' name='cmd' value='newsite')
-        input(type='text' name='name' placeholder='nieuw')
+        input(type='text' name='name'
+          placeholder='nieuwe website')
         input(type='submit' value='>')
     table
         tr
             th Name
             th Selector
+            th Css
         each selector, name in sites
-            tr(class={opened: cssopened === name})
+            tr(class={opened: cssopened === name} id=name)
                 td
                     div= name
                 td(class='selector')
@@ -33,4 +40,4 @@ html
                         input(type='hidden' name='cmd' value='editcss')
                         input(type='hidden' name='name' value=name)
                         input(type='submit' name='submit' class={opened: cssopened === name}
-                        value='Bewerk css')
+                          value='css')

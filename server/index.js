@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
     res.render('index', {
         query: q,
         title: appTitle,
-        message: 'Hallo daar',
+        message: '',
         sites: items
     });
 });
