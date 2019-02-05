@@ -4,13 +4,18 @@ html
         link(href='/style.css', rel='stylesheet')
         script(src='/script.js')
     body
-        h1= 'Reader Configuratie'
+        h2= 'Reader Configuratie'
+        span(class='message') #{message}
     form(method='post')
         input(type='hidden' name='cmd' value='editsites')
         input(type='submit' name='submit' class={opened: sitesopened}
         value='Bewerk selectors')
     form
-        input(type='text' name='query' value=query placeholder='name')
+        input(type='text' name='query' value=query placeholder='naam')
+        input(type='submit' value='>')
+    form(method='post')
+        input(type='hidden' name='cmd' value='newsite')
+        input(type='text' name='name' placeholder='nieuw')
         input(type='submit' value='>')
     table
         tr
@@ -19,8 +24,8 @@ html
         each selector, name in sites
             tr(class={opened: cssopened === name})
                 td
-                    div(onclick="alert('hey');rd('" + name + "')") #{name}
-                td
+                    div= name
+                td(class='selector')
                     each sel in selector
                         div= sel
                 td

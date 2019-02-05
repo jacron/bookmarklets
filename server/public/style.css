@@ -1,12 +1,27 @@
 tr:nth-child(odd) {
     background-color: #E8E8E8;
 }
+tr:nth-child(even) {
+    background-color: #EfEfEf;
+}
 table {
     font-family: monospace;
+}
+td {
+    padding: 6px;
 }
 .opened {
     color: blue;
 }
 .hidden {
     display: none;
+}
+.selector {
+    color: #337744;
+}
+body {
+    background-color: #888888;
+}
+h1, h2 {
+    color: #eee;
 }

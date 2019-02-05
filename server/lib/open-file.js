@@ -1,7 +1,5 @@
 const { exec } = require('child_process');
-
-const cssPath = '/Users/orion/PhpstormProjects/bookmarklets/scripts/reader/css/';
-const sitesPath = '/Users/orion/PhpstormProjects/bookmarklets/scripts/reader/sites.js';
+const {cssPath, sitesPath} = require('./path');
 
 openFile = (path, success) => {
     exec('pstorm ' + path, (err, stdout, stderr) => {

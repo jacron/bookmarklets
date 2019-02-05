@@ -1,15 +1,18 @@
 const express = require('express');
 const bodyparser = require('body-parser');
 const sites = require('../scripts/reader/sites');
-const {sortDictionary, filterDictionary}  = require('./lib/sort-dictionary');
+const {sortDictionary, filterDictionary}  = require('./lib/dictionary');
 const {opencss, opensites} = require('./lib/open-file');
+const newsite = require('./lib/newsite');
 
 const app = express();
 const port = 3003;
+const appTitle = 'reader config 1.0'
 
 app.use(express.static('public'));
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
+app.use('/favicon.ico', express.static('public/favicon.ico'));
 app.set('view engine', 'pug');
 
 app.get('/', (req, res) => {
@@ -17,7 +20,7 @@ app.get('/', (req, res) => {
     const items = filterDictionary(sortDictionary(sites), q);
     res.render('index', {
         query: q,
-        title: 'reader 1.0',
+        title: appTitle,
         message: 'Hallo daar',
         sites: items
     });
@@ -35,11 +38,14 @@ app.post('/', (req, res) => {
             message = opensites();
             sitesopened = true;
             break;
+        case 'newsite':
+            message = newsite(req.body.name, sites);
+            break;
     }
     res.render('index', {
         cssopened: req.body.name,
         sitesopened,
-        title: 'reader 1.0',
+        title: appTitle,
         message,
         sites: sortDictionary(sites)
     });
