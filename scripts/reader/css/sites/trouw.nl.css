@@ -26,6 +26,8 @@ body.dark,
     color: #eee !important;
 }
 .dark h2,
+.dark a,
+.dark p,
 .dark .teaser__text {
     color: #eee !important;
 }

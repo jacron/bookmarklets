@@ -1,6 +1,8 @@
 const fs = require("fs");
 const { exec } = require('child_process');
 const {cssPath, sitesPath} = require('./path');
+const ideName = 'PhpStorm';
+const ideCmd = 'pstorm';
 
 const deleteFile = (path) => {
     if (fs.existsSync(path)) {
@@ -11,10 +13,10 @@ const deleteFile = (path) => {
 };
 
 const openFile = (path, success) => {
-    exec('pstorm ' + path, (err, stdout, stderr) => {
+    exec(`${ideCmd} path`, (err, stdout, stderr) => {
         if (err) {
             console.log(err);
-            return 'Fout bij openen PHPStorm';
+            return 'Fout bij openen ';
         }
     });
     return success;
@@ -23,7 +25,7 @@ const openFile = (path, success) => {
 const opencss = name => {
     return openFile(
         cssPath +  `sites/${name}.css`,
-        name + '.css is geopend in PHPStorm'
+        name + `.css is geopend in ${ideName}`
     );
 };
 
@@ -38,7 +40,7 @@ const openselector = name => {
     // watch(file);
     return openFile(
         file,
-        name + '.js is geopend in PHPStorm'
+        name + `.js is geopend in ${ideName}`
     );
 };
 

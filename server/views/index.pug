@@ -7,20 +7,23 @@ html
           integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
           crossorigin="anonymous")
     body
-        .top-section
-            .header Reader Configuratie
-            .message(class={active: message})= message
-            input(type='text' name='query' value=query id='q'
-              placeholder='filter' onkeyup='onfilter(this.value)')
-            button(onclick="clearfilter()") x
-            br
-            br
-            form(method='post')
-                input(type='hidden' name='cmd' value='newsite')
-                input(type='text' name='name'
-                  placeholder='nieuwe website')
-                input(type='submit' value='>')
         table
+            tr
+                td(colspan='5')
+                    .top-section
+                        .header Reader Configuratie
+                        .message(class={active: message})= message
+                        input(type='text' name='query' value=query id='q'
+                        placeholder='filter' onkeyup='onfilter(this.value)')
+                        button(onclick="clearfilter()") x
+                        br
+                        br
+                        form(method='post')
+                            input(type='hidden' name='cmd' value='newsite')
+                            input(type='text' name='name'
+                            placeholder='nieuwe website')
+                            input(type='submit' value='>')
+
             tr
                 th Name
                 th Selector

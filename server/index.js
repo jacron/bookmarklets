@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
     // res.send('testing (get). . . ');
     res.render('index', {
         title: appTitle,
-        message: '',
+        message: __dirname,
         sites: items
     });
 });
