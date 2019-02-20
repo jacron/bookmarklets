@@ -36,6 +36,7 @@ if (isset($_REQUEST['script'])) {
 <head>
     <title><?= $title ?></title>
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/icon.css">
 </head>
 <body>
 <div id="pagecontent">

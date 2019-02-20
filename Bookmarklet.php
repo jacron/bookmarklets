@@ -182,10 +182,11 @@ loadScript('$url$f', next0);
 </div>
 EOT;
         $script_div = <<<EOT
-        <div class="script-link">
-            <a href="javascript:@script_href" title="drag me to your bookmark bar">@script_text</a>
+            <a href="javascript:@script_href" class="script-link" 
+                title="drag me to your bookmark bar">
+                @script_text
+                </a>
             <div class="script-body">@script_href</div>        
-        </div>
 EOT;
         $template_script = $this->makeScript($script_div);
         $template_inline = $this->makeInline($script_div);

@@ -93,72 +93,6 @@ td{
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 80px;
-  height: 60px;
-}
-.imdb,
-.flickr,
-.nos,
-.journaal24,
-.google,
-.youtube,
-.nmovies,
-.image {
-  background: url("../images/sprite.png") no-repeat right top;
-}
-.imdb {
-  background-position: -70px 0;
-  width: 48px;
-  height:21px;
-}
-.flickr {
-  background-position: -180px -37px;
-  width: 72px;
-  height:22px;
-}
-.nos {
-  background-position: -180px 0;
-  width: 80px;
-  height:30px;
-}
-.journaal24 {
-  background-position: 0 0;
-  width: 55px;
-  height:52px;
-}
-.google {
-  background-position: -264px 0;
-  width: 26px;
-  height:26px;
-}
-.youtube {
-  background-position: 0 -55px;
-  width: 72px;
-  height:22px;
-}
-.nmovies {
-  background-position: -125px 0;
-  width: 43px;
-  height:44px;
-}
-.image {
-  background-position: -67px -26px;
-  width: 53px;
-  height:44px;
-}
-.footer {
-  margin-left: 20px;
-  clear: both;
-}
-.jcroonen {
-  background-position: -139px -50px;
-  width: 16px;
-  height:16px;
-}
 .clear {
   clear: both;
 }
@@ -194,7 +128,7 @@ td{
     width: fit-content;
     float: left;
 }
-.script-link a {
+.script-link {
     text-decoration: none;
 }
 .script-file {

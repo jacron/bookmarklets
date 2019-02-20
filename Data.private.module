@@ -112,5 +112,17 @@ $tiles = array(
         'link' => 'tt',
         'icon' => 'nos'
     ),
+    // user pass 2019 in a popup
+    array(
+        'title' => 'User Pass 19',
+        'subtitle' => 'User Pass in popup',
+        'body' => 'Note: this also works directly as a hyperlink.',
+        'script' => "
+      specs = 'width=606,height=584,resizable=0,locationbar=0';
+      url = 'http://localhost:3010/details/4028';
+      window.open(url, 'w', specs);",
+        'link' => 'up',
+        'icon' => 'userpass'
+    ),
 );
 
