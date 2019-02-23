@@ -118,8 +118,9 @@ $tiles = array(
         'subtitle' => 'User Pass in popup',
         'body' => 'Note: this also works directly as a hyperlink.',
         'script' => "
+      host = document.location.hostname;
       specs = 'width=606,height=584,resizable=0,locationbar=0';
-      url = 'http://localhost:3010/details/4028';
+      url = 'http://localhost:3010/url/' + host;
       window.open(url, 'w', specs);",
         'link' => 'up',
         'icon' => 'userpass'
