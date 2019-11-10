@@ -1,4 +1,3 @@
-'use strict';
 /*global document */
 /*jslint browser:true, white:true, devel:true */
 /*
@@ -15,21 +14,21 @@
      * The existing list of links will be removed.
      *
      * Author: Jan Croonen 2013.
-     */
-    var name = "opener3";
-    var version = 1.0;
+     *
+     * 2019
+     * tampermonkey
+    */
+    // @match        *://*/*
+
+    'use strict';
 
     function hasGraphExtension(s) {
-        var p,
-            ext,
-            exts = ['jpg','png', 'gif', 'jpeg', 'bmp'],
-            k;
-
-        p = s.lastIndexOf('.');
+        const p = s.lastIndexOf('.'),
+            exts = ['jpg','png', 'gif', 'jpeg', 'bmp'];
         if (p !== -1) {
-            ext = s.substr(p + 1).toUpperCase();
-            for (k = 0; k < exts.length; k+=1) {
-                if (ext === exts[k].toUpperCase()) {
+            const ext = s.substr(p + 1).toLowerCase();
+            for (let k = 0; k < exts.length; k+=1) {
+                if (ext === exts[k]) {
                     return true;
                 }
             }
@@ -37,92 +36,81 @@
         return false;
 
     }
-    function unescape(s) {
-        return s.replace('&gt;', '>').replace('&lt;', '<');
-    }
-    function bodyAppendElements(el, n) {
-        var i;
-        for (i = 0; i < n; i+=1) {
+    function bodyAppendElements(body, el, n) {
+        for (let i = 0; i < n; i+=1) {
             body.appendChild(document.createElement(el));
         }
     }
-    var link,
-        links = document.links,
-        linksLen = links.length,
-        i,
-        hasHttpProtocol,
-        hasFtpProtocol,
-        href,
-        img,
-        anchor,
-        anchors = [],
-        anchorsLen,
-        body = document.body,
-        pdLink,
-        title,
-        linkText,
-        innerImg,
-        node;
+    function getAnchor(href) {
+        const img = document.createElement('img');
+        img.onload = function() {
+            this.title = this.naturalWidth + 'x' + this.naturalHeight;
+            if (this.naturalWidth > 1000) {
+                this.style.border = '1px solid red';
+            }
+        };
+        img.width = 300;
+        img.style.height = 'auto';
+        img.style.margin = '2px';
+        img.src = href;
+        const anchor = document.createElement('a');
+        anchor.href = href;
+        anchor.target = '_blank';
+        anchor.appendChild(img);
+        return anchor;
+    }
+    function getAnchors() {
 
-    for (i = 0; i < linksLen; i+=1) {
-        link = links[i];
-        href = link.href;
-        linkText = link.innerHTML;
-        innerImg = link.getElementsByTagName('img');
+        const links = document.links,
+            anchors = [];
+        let pdLink = '';
 
-        if (linkText.trim() === 'Parent Directory') {
-            pdLink = link;
-        }
-        hasHttpProtocol = href.indexOf('http') === 0;
-        hasFtpProtocol = href.indexOf('ftp') === 0;
-        if ((hasHttpProtocol || hasFtpProtocol) &&
+        for (let i = 0; i < links.length; i+=1) {
+            const link = links[i];
+            let href = link.href;
+            if (link.innerHTML.trim() === 'Parent Directory') {
+                pdLink = link;
+            }
+            if ((href.indexOf('http') === 0 || href.indexOf('ftp') === 0) &&
                 hasGraphExtension(href) &&
-                innerImg.length === 0  // skip icons
-                ) {
-            img = document.createElement('img');
-
-            img.onload = function() {
-                this.title = this.naturalWidth + 'x' + this.naturalHeight;
-                if (this.naturalWidth > 1000) {
-                    this.style.border = '1px solid red';
-                }
-            };
-            img.width = '300';
-            img.style.height = 'auto';
-            //img.style.border = 'none';
-            img.style.margin = '2px';
-
-            img.src = href;
-            //img.title = unescape(linkText);
-
-            anchor = document.createElement('a');
-            anchor.href = href;
-            anchor.target = '_blank';
-            anchor.appendChild(img);
-            anchors.push(anchor);
+                link.getElementsByTagName('img').length === 0 // skip icons
+            ) {
+                anchors.push(getAnchor(href));
+            }
+        }
+        return {anchors, pdLink};
+    }
+    function emptyBody(body) {
+        while (body.childNodes.length > 0) {
+            const node = body.childNodes[0];
+            body.removeChild(node);
         }
     }
-    // Remove all elements from body.
-    // http://stackoverflow.com/questions/4952585/how-can-i-remove-all-child-elements-of-body-element-with-domdocument
-    while (body.childNodes.length > 0) {
-        node = body.childNodes[0];
-        body.removeChild(node);
+    function loadImages() {
+        const body = document.body;
+        const {anchors, pdLink} = getAnchors(body);
+        if (!anchors.length) {
+            return;
+        }
+        // emptyBody(body);
+        const anchorsLen = anchors.length;
+        const title = document.createElement('h1');
+        title.appendChild(document.createTextNode(anchorsLen + ' images for ' + document.title));
+        body.appendChild(title);
+        if (pdLink) {
+            body.appendChild(pdLink);
+        }
+        bodyAppendElements(body,'br', 2);
+        for (let i = 0; i < anchorsLen; i+=1) {
+            body.appendChild(anchors[i]);
+        }
+        if (pdLink) {
+            bodyAppendElements(body,'br', 2);
+            body.appendChild(pdLink.cloneNode(true));
+            bodyAppendElements(body, 'br', 3);
+        }
     }
-    // Provide header.
-    anchorsLen = anchors.length;
-    title = document.createElement('h1');
-    title.appendChild(document.createTextNode(anchorsLen + ' images for ' + document.title));
-    body.appendChild(title);
-    if (pdLink) {
-        body.appendChild(pdLink);
-    }
-    bodyAppendElements('br', 2);
-    for (i = 0; i < anchorsLen; i+=1) {
-        body.appendChild(anchors[i]);
-    }
-    if (pdLink) {
-        bodyAppendElements('br', 2);
-        body.appendChild(pdLink.cloneNode(true));
-        bodyAppendElements('br', 3);
+    if (document.title.indexOf('Index of ') === 0) {
+        loadImages();
     }
 }());
